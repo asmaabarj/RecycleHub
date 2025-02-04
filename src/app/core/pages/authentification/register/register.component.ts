@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { register } from '../../../state/auth/auth.actions';
+import { RouterLink, Router } from '@angular/router';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
   selector: 'app-register',
@@ -14,10 +14,12 @@ import { register } from '../../../state/auth/auth.actions';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  errorMessage: string = '';
   
   constructor(
     private fb: FormBuilder,
-    private store: Store
+    private storageService: StorageService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -41,7 +43,17 @@ export class RegisterComponent implements OnInit {
         birthDate: new Date(formValue.birthDate),
         userType: 'particular' as const
       };
-      this.store.dispatch(register(userData));
+
+      // Tenter d'enregistrer l'utilisateur
+      const isRegistered = this.storageService.saveUser(userData);
+      
+      if (isRegistered) {
+        // Succès : rediriger vers la page de connexion
+        this.router.navigate(['/login']);
+      } else {
+        // Échec : afficher un message d'erreur
+        this.errorMessage = 'Un utilisateur avec cet email existe déjà';
+      }
     }
   }
 }
