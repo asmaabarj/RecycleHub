@@ -4,3 +4,30 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary-green: #34D399;
+  --secondary-green: #059669;
+  --light-green: #D1FAE5;
+  --dark-green: #065F46;
+  --accent-blue: #0EA5E9;
+}
+
+body {
+  background: linear-gradient(135deg, var(--light-green) 0%, #ffffff 100%);
+}
+
+.eco-gradient {
+  background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+}
+
+.eco-button {
+  @apply px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white;
+  background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+  transition: all 0.3s ease;
+}
+
+.eco-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+

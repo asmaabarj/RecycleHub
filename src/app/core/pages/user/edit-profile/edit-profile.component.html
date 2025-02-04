@@ -1,106 +1,149 @@
-<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
-    <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
-      <div class="max-w-md mx-auto">
-        <div class="divide-y divide-gray-200">
-          <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-            <h2 class="text-2xl font-bold mb-8">Modifier le profil</h2>
-
-            <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="space-y-6">
-              <!-- Prénom -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Prénom</label>
-                <input
-                  type="text"
-                  formControlName="firstName"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                >
-              </div>
-
-              <!-- Nom -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Nom</label>
-                <input
-                  type="text"
-                  formControlName="lastName"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                >
-              </div>
-
-              <!-- Email -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  formControlName="email"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                >
-              </div>
-
-              <!-- Téléphone -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Téléphone</label>
-                <input
-                  type="tel"
-                  formControlName="phone"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                >
-              </div>
-
-              <!-- Adresse -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Adresse</label>
-                <input
-                  type="text"
-                  formControlName="address"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                >
-              </div>
-
-              <!-- Date de naissance -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Date de naissance</label>
-                <input
-                  type="date"
-                  formControlName="birthDate"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                >
-              </div>
-
-              <!-- Photo de profil -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Photo de profil</label>
-                <input
-                  type="file"
-                  formControlName="profileImage"
-                  accept="image/*"
-                  class="mt-1 block w-full"
-                >
-              </div>
-
-              <!-- Boutons -->
-              <div *ngIf="errorMessage" class="mt-4 text-center text-red-600">
-                {{ errorMessage }}
-              </div>
-              <div class="flex justify-end space-x-4 pt-4">
-                <button
-                  type="button"
-                  routerLink="/profile"
-                  class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  [disabled]="!editForm.valid"
-                  class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400"
-                >
-                  Enregistrer
-                </button>
-              </div>
-            </form>
+<div class="min-h-screen bg-gradient-to-b from-green-50 to-emerald-100 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
+      <!-- En-tête -->
+      <div class="px-6 py-8 bg-gradient-to-r from-green-600 to-emerald-700">
+        <div class="flex items-center space-x-4">
+          <div class="w-20 h-20 rounded-full bg-white p-1">
+            <div class="w-full h-full rounded-full bg-gradient-to-br from-green-400 to-emerald-500 p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white">Modifier mon profil</h2>
+            <p class="text-green-100">Personnalisez vos informations</p>
           </div>
         </div>
+      </div>
+
+      <!-- Formulaire -->
+      <div class="p-6">
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Informations personnelles -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium text-green-800 border-b border-green-100 pb-2">
+                Informations personnelles
+              </h3>
+              
+              <div>
+                <label class="block text-sm font-medium text-green-700 mb-1">Prénom</label>
+                <input
+                  formControlName="firstName"
+                  type="text"
+                  class="appearance-none block w-full px-4 py-3 border border-green-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-150 ease-in-out"
+                  placeholder="Votre prénom"
+                >
+                <div *ngIf="editForm.get('firstName')?.errors?.['required'] && editForm.get('firstName')?.touched" 
+                     class="mt-1 text-sm text-red-600 bg-red-50 px-2 py-1 rounded">
+                  Le prénom est requis
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-green-700 mb-1">Nom</label>
+                <input
+                  formControlName="lastName"
+                  type="text"
+                  class="appearance-none block w-full px-4 py-3 border border-green-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-150 ease-in-out"
+                  placeholder="Votre nom"
+                >
+                <div *ngIf="editForm.get('lastName')?.errors?.['required'] && editForm.get('lastName')?.touched" 
+                     class="mt-1 text-sm text-red-600 bg-red-50 px-2 py-1 rounded">
+                  Le nom est requis
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-green-700 mb-1">Email</label>
+                <input
+                  formControlName="email"
+                  type="email"
+                  class="appearance-none block w-full px-4 py-3 border border-green-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-150 ease-in-out"
+                  placeholder="votre@email.com"
+                >
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-green-700 mb-1">Date de naissance</label>
+                <input
+                  formControlName="birthDate"
+                  type="date"
+                  class="appearance-none block w-full px-4 py-3 border border-green-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-150 ease-in-out"
+                >
+              </div>
+            </div>
+
+            <!-- Coordonnées -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium text-green-800 border-b border-green-100 pb-2">
+                Coordonnées
+              </h3>
+
+              <div>
+                <label class="block text-sm font-medium text-green-700 mb-1">Téléphone</label>
+                <input
+                  formControlName="phone"
+                  type="tel"
+                  class="appearance-none block w-full px-4 py-3 border border-green-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-150 ease-in-out"
+                  placeholder="0612345678"
+                >
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-green-700 mb-1">Adresse</label>
+                <textarea
+                  formControlName="address"
+                  rows="3"
+                  class="appearance-none block w-full px-4 py-3 border border-green-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-150 ease-in-out resize-none"
+                  placeholder="Votre adresse complète"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-green-700 mb-1">Photo de profil</label>
+                <div class="mt-1 flex items-center space-x-4">
+                  <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="file"
+                    formControlName="profileImage"
+                    accept="image/*"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Messages d'erreur -->
+          <div *ngIf="errorMessage" class="mt-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="flex justify-end space-x-4 pt-6 border-t border-gray-100">
+            <button
+              type="button"
+              routerLink="/profile"
+              class="px-6 py-2 border border-green-300 rounded-lg shadow-sm text-sm font-medium text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-150"
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              [disabled]="!editForm.valid"
+              class="px-6 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] transition-all duration-150"
+            >
+              Enregistrer les modifications
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
