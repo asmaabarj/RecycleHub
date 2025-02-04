@@ -1,21 +1,18 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
-import { AuthState } from '../models/user.model';
-import { selectIsAuthenticated } from '../state/auth/auth.selectors';
+import { map, of } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 export const authGuard = () => {
   const router = inject(Router);
-  const store = inject(Store);
+  const authService = inject(AuthService);
 
-  return store.select(selectIsAuthenticated).pipe(
-    map(isAuthenticated => {
-      if (!isAuthenticated) {
-        router.navigate(['/login']);
-        return false;
-      }
-      return true;
-    })
-  );
+  const currentUser = localStorage.getItem('currentUser');
+  
+  if (currentUser) {
+    return of(true);
+  } else {
+    router.navigate(['/login']);
+    return of(false);
+  }
 };

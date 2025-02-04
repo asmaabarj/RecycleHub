@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { login } from '../../../state/auth/auth.actions';
+import { RouterLink, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AuthService } from '../../../services/auth.service';
+import { login, loginSuccess } from '../../../state/auth/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +15,12 @@ import { login } from '../../../state/auth/auth.actions';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  errorMessage: string = '';
   
   constructor(
     private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
     private store: Store
   ) {}
 
@@ -29,7 +33,17 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.store.dispatch(login(this.loginForm.value));
+      const { email, password } = this.loginForm.value;
+      
+      this.authService.login(email, password).subscribe({
+        next: (user) => {
+          this.store.dispatch(loginSuccess({ user }));
+          this.router.navigate(['/profile']);
+        },
+        error: (error) => {
+          this.errorMessage = 'Email ou mot de passe incorrect';
+        }
+      });
     }
   }
 }

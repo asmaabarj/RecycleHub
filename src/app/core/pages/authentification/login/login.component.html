@@ -37,6 +37,10 @@
         </button>
       </div>
 
+      <div *ngIf="errorMessage" class="mt-4 text-center text-red-600">
+        {{ errorMessage }}
+      </div>
+
       <div class="text-sm text-center">
         <a routerLink="/register" class="font-medium text-indigo-600 hover:text-indigo-500">
           Pas encore de compte ? S'inscrire

@@ -10,7 +10,6 @@ export class StorageService {
   private readonly COLLECTORS_KEY = 'collectors';
 
   constructor() {
-    // Initialiser le tableau des utilisateurs s'il n'existe pas
     if (!localStorage.getItem(this.USERS_KEY)) {
       localStorage.setItem(this.USERS_KEY, JSON.stringify([]));
     }
@@ -27,11 +26,9 @@ export class StorageService {
 
   saveUser(user: User): boolean {
     const users = this.getAllUsers();
-    // Vérifier si l'email existe déjà
     if (users.some(u => u.email === user.email)) {
       return false;
     }
-    // Ajouter le nouvel utilisateur
     users.push({
       ...user,
       id: this.generateUserId(),

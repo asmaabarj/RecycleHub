@@ -44,14 +44,11 @@ export class RegisterComponent implements OnInit {
         userType: 'particular' as const
       };
 
-      // Tenter d'enregistrer l'utilisateur
       const isRegistered = this.storageService.saveUser(userData);
       
       if (isRegistered) {
-        // Succès : rediriger vers la page de connexion
         this.router.navigate(['/login']);
       } else {
-        // Échec : afficher un message d'erreur
         this.errorMessage = 'Un utilisateur avec cet email existe déjà';
       }
     }

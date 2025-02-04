@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../../../models/user.model';
 import { logout } from '../../../state/auth/auth.actions';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,15 +17,38 @@ import { logout } from '../../../state/auth/auth.actions';
 export class ProfileComponent implements OnInit {
   user$: Observable<User | null>;
 
-  constructor(private store: Store<{ auth: { user: User | null } }>) {
-    this.user$ = this.store.select(state => state.auth.user);
+  constructor(
+    private store: Store<{ auth: { user: User | null } }>,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    const currentUser = this.authService.getCurrentUser();
+    this.user$ = currentUser ? of(currentUser) : this.store.select(state => state.auth.user);
   }
 
   ngOnInit(): void {
-    // Implementation de l'interface OnInit
   }
 
   onLogout() {
+    this.authService.logout(); 
     this.store.dispatch(logout());
+    this.router.navigate(['/login']);
+  }
+
+  onDeleteAccount() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
+      this.user$.subscribe(user => {
+        if (user) {
+          this.authService.deleteAccount(user.id).subscribe({
+            next: () => {
+              this.router.navigate(['/login']);
+            },
+            error: (error) => {
+              console.error('Erreur lors de la suppression du compte:', error);
+            }
+          });
+        }
+      });
+    }
   }
 }
