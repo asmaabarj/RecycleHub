@@ -79,6 +79,9 @@
               </div>
 
               <!-- Boutons -->
+              <div *ngIf="errorMessage" class="mt-4 text-center text-red-600">
+                {{ errorMessage }}
+              </div>
               <div class="flex justify-end space-x-4 pt-4">
                 <button
                   type="button"
