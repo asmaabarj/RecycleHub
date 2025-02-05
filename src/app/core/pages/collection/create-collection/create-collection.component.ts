@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import * as CollectionActions from '../../../state/collection/collection.actions';
+import { take } from 'rxjs/operators';
+
+interface AppState {
+  collection: {
+    requests: any[];
+  }
+}
 
 @Component({
   selector: 'app-create-collection',
@@ -19,7 +26,7 @@ export class CreateCollectionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store,
+    private store: Store<AppState>,
     private router: Router
   ) {}
 
@@ -31,7 +38,7 @@ export class CreateCollectionComponent implements OnInit {
     this.collectionForm = this.fb.group({
       wasteTypes: this.fb.array([]),
       collectionAddress: ['', [Validators.required]],
-      collectionDate: ['', [Validators.required]],
+      collectionDate: ['', [Validators.required, this.futureDateValidator()]],
       timeSlot: ['', [Validators.required]],
       notes: [''],
       photos: [[]]
@@ -65,8 +72,42 @@ export class CreateCollectionComponent implements OnInit {
     return slots;
   }
 
+  private validateCollection(formValue: any): string | null {
+    // Vérifier le nombre de demandes en attente
+    let pendingRequestsCount = 0;
+    this.store.select(state => state.collection.requests)
+      .pipe(take(1))
+      .subscribe(requests => {
+        pendingRequestsCount = requests.filter(req => req.status === 'en_attente').length;
+      });
+
+    if (pendingRequestsCount >= 3) {
+      return 'Vous avez déjà 3 demandes en attente';
+    }
+
+    // Vérifier le poids total
+    const totalWeight = formValue.wasteTypes.reduce(
+      (sum: number, waste: any) => sum + Number(waste.weight), 0
+    );
+
+    if (totalWeight < 1000) {
+      return 'Le poids total doit être d\'au moins 1kg (1000g)';
+    }
+
+    if (totalWeight > 10000) {
+      return 'Le poids total ne peut pas dépasser 10kg';
+    }
+
+    return null;
+  }
+
   onSubmit() {
     if (this.collectionForm.valid) {
+      const error = this.validateCollection(this.collectionForm.value);
+      if (error) {
+        this.errorMessage = error;
+        return;
+      }
       const formValue = this.collectionForm.value;
       const totalWeight = formValue.wasteTypes.reduce(
         (sum: number, waste: any) => sum + Number(waste.weight), 0
@@ -74,11 +115,6 @@ export class CreateCollectionComponent implements OnInit {
 
       if (totalWeight < 1000) {
         this.errorMessage = 'Le poids total doit être d\'au moins 1kg (1000g)';
-        return;
-      }
-
-      if (totalWeight > 10000) {
-        this.errorMessage = 'Le poids total ne peut pas dépasser 10kg (10000g)';
         return;
       }
 
@@ -109,5 +145,31 @@ export class CreateCollectionComponent implements OnInit {
         reader.readAsDataURL(files[i]);
       }
     }
+  }
+
+  private futureDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const selectedDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      return selectedDate >= today ? null : { pastDate: true };
+    };
+  }
+
+  private validateTotalWeight(): ValidatorFn {
+    return (formArray: AbstractControl): ValidationErrors | null => {
+      const wasteTypes = formArray.value as any[];
+      const totalWeight = wasteTypes.reduce((sum, waste) => sum + Number(waste.weight), 0);
+      
+      if (totalWeight < 1000) {
+        return { minWeight: true };
+      }
+      if (totalWeight > 10000) {
+        return { maxWeight: true };
+      }
+      
+      return null;
+    };
   }
 } 

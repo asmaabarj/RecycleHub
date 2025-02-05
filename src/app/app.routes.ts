@@ -6,11 +6,20 @@ import { EditProfileComponent } from './core/pages/user/edit-profile/edit-profil
 import { authGuard } from './core/guards/auth.guard';
 import { userResolver } from './core/resolvers/user.resolver';
 import { CollectionGuard } from './core/guards/collection.guard';
+import { authPagesGuard } from './core/guards/auth-pages.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { 
+    path: 'login', 
+    component: LoginComponent,
+    canActivate: [authPagesGuard]
+  },
+  { 
+    path: 'register', 
+    component: RegisterComponent,
+    canActivate: [authPagesGuard]
+  },
   { 
     path: 'profile', 
     component: ProfileComponent,

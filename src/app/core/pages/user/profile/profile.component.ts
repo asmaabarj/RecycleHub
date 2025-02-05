@@ -4,7 +4,7 @@ import { RouterLink, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { User } from '../../../models/user.model';
-import { logout } from '../../../state/auth/auth.actions';
+import * as AuthActions from '../../../state/auth/auth.actions';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -30,8 +30,8 @@ export class ProfileComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService.logout(); 
-    this.store.dispatch(logout());
+    this.store.dispatch(AuthActions.logout());
+    localStorage.removeItem('currentUser');
     this.router.navigate(['/login']);
   }
 

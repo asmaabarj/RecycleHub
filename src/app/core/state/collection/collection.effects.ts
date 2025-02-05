@@ -1,37 +1,62 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, mergeMap, catchError, withLatestFrom } from 'rxjs/operators';
+import { map, mergeMap, catchError, withLatestFrom, tap, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { CollectionService } from '../../services/collection.service';
 import * as CollectionActions from './collection.actions';
 import { AuthService } from '../../services/auth.service';
 import { AppState } from '../app.state';
 
+interface CollectionRequest {
+  status: string;
+  // ... autres propriétés
+}
+
 @Injectable()
 export class CollectionEffects {
+  saveCollections$ = createEffect(() => 
+    this.actions$.pipe(
+      ofType(
+        CollectionActions.addCollection,
+        CollectionActions.updateCollection,
+        CollectionActions.deleteCollection
+      ),
+      tap(() => {
+        // Sauvegarder l'état actuel après chaque modification
+        const currentState = this.store.select(state => state.collection.requests);
+        currentState.pipe(take(1)).subscribe(requests => {
+          localStorage.setItem('collections', JSON.stringify(requests));
+        });
+      })
+    ),
+    { dispatch: false }
+  );
+
   loadCollections$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CollectionActions.loadCollections),
-      withLatestFrom(this.store.select((state: AppState) => state.auth.user)),
-      mergeMap(([_, user]) => 
-        this.collectionService.getUserCollections(user!.id).pipe(
-          map(collections => CollectionActions.loadCollectionsSuccess({ collections })),
-          catchError(error => of(CollectionActions.collectionError({ error: error.message })))
-        )
-      )
+      map(() => {
+        const savedCollections = localStorage.getItem('collections');
+        const collections = savedCollections ? JSON.parse(savedCollections) : [];
+        return CollectionActions.loadCollectionsSuccess({ collections });
+      })
     )
   );
 
   addCollection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CollectionActions.addCollection),
-      mergeMap(({ collection }) =>
-        this.collectionService.addCollection(collection).pipe(
-          map(newCollection => CollectionActions.addCollectionSuccess({ collection: newCollection })),
-          catchError(error => of(CollectionActions.collectionError({ error: error.message })))
-        )
-      )
+      withLatestFrom(this.store.select(state => state.collection.requests)),
+      map(([action, requests]) => {
+        const pendingRequests = requests.filter((req: CollectionRequest) => req.status === 'en_attente');
+        if (pendingRequests.length >= 3) {
+          return CollectionActions.addCollectionFailure({
+            error: 'Vous avez déjà atteint la limite de 3 demandes en attente'
+          });
+        }
+        return CollectionActions.addCollectionSuccess({ collection: action.collection });
+      })
     )
   );
 

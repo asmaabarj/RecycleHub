@@ -12,8 +12,9 @@ export interface AuthState {
 export const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
+  loading: false,
   error: null,
-  loading: false
+
 };
 
 export const authReducer = createReducer(
@@ -52,5 +53,10 @@ export const authReducer = createReducer(
     error,
     loading: false
   })),
-  on(AuthActions.logout, () => initialState)
+  on(AuthActions.logout, (state) => ({
+    ...state,
+    user: null,
+    isAuthenticated: false,
+    error: null
+  }))
 );

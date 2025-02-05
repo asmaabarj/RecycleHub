@@ -120,6 +120,16 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </button>
+
+        <div *ngIf="collectionForm?.get('wasteTypes')?.errors?.['minWeight']" class="text-red-500 text-sm mt-1">
+          Le poids total doit être d'au moins 1kg (1000g)
+        </div>
+        <div *ngIf="collectionForm?.get('wasteTypes')?.errors?.['maxWeight']" class="text-red-500 text-sm mt-1">
+          Le poids total ne peut pas dépasser 10kg
+        </div>
+        <div *ngIf="collectionForm?.get('collectionDate')?.errors?.['pastDate']" class="text-red-500 text-sm mt-1">
+          La date de collecte doit être future
+        </div>
       </form>
     </div>
   </div>
