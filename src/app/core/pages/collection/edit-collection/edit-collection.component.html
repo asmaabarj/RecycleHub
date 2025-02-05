@@ -1,0 +1,151 @@
+<div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
+  <!-- Éléments de design d'arrière-plan -->
+  <div class="absolute inset-0">
+    <div class="absolute h-64 w-64 rounded-full bg-[#559638]/5 -top-20 -right-20 blur-3xl"></div>
+    <div class="absolute h-64 w-64 rounded-full bg-[#559638]/5 -bottom-20 -left-20 blur-3xl"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-[#30323F]/20 backdrop-blur-[120px]"></div>
+  </div>
+
+  <div class="min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- En-tête -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-white tracking-tight mb-2">Modifier la Demande de Collecte</h1>
+      <div class="h-1 w-20 bg-gradient-to-r from-[#559638] to-[#447A2D] mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="bg-[#30323F]/80 backdrop-blur-xl rounded-3xl p-8 max-w-2xl w-full shadow-[0_8px_32px_rgb(0,0,0,0.3)] border border-white/5">
+      <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Message d'erreur -->
+        <div *ngIf="errorMessage" class="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Types de déchets -->
+        <div formArrayName="wasteTypes" class="space-y-4">
+          <div *ngFor="let waste of wasteTypes.controls; let i=index" [formGroupName]="i"
+               class="p-4 bg-[#383B4A]/30 rounded-xl border border-white/5">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-white font-medium">Type de déchet #{{i + 1}}</h3>
+              <button type="button" *ngIf="wasteTypes.length > 1" 
+                      (click)="removeWasteType(i)"
+                      class="text-red-400 hover:text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Type</label>
+                <select formControlName="type" 
+                        class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5">
+                  <option value="">Sélectionner un type</option>
+                  <option value="plastique">Plastique</option>
+                  <option value="verre">Verre</option>
+                  <option value="papier">Papier</option>
+                  <option value="metal">Métal</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Poids (en grammes)</label>
+                <input type="number" formControlName="weight"
+                       class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5"
+                       placeholder="Minimum 100g">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" 
+                (click)="addWasteType()"
+                class="w-full py-2.5 px-4 text-[#559638] bg-[#559638]/10 rounded-xl hover:bg-[#559638]/20 transition-colors duration-300">
+          + Ajouter un type de déchet
+        </button>
+
+        <!-- Autres champs -->
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-400 mb-1">Adresse de collecte</label>
+            <input formControlName="collectionAddress"
+                   class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5"
+                   placeholder="Adresse complète">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Date de collecte</label>
+              <input type="date" formControlName="collectionDate"
+                     class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-400 mb-1">Créneau horaire</label>
+              <select formControlName="timeSlot"
+                      class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5">
+                <option value="">Sélectionner un créneau</option>
+                <option *ngFor="let slot of timeSlots" [value]="slot">{{slot}}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Photos existantes -->
+          <div *ngIf="collectionForm.get('photos')?.value?.length">
+            <label class="block text-sm font-medium text-gray-400 mb-2">Photos actuelles</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div *ngFor="let photo of collectionForm.get('photos')?.value; let i = index" 
+                   class="relative group">
+                <img [src]="photo" class="w-full h-32 object-cover rounded-lg">
+                <button type="button" 
+                        (click)="removePhoto(i)"
+                        class="absolute top-2 right-2 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload de nouvelles photos -->
+          <div>
+            <label class="block text-sm font-medium text-gray-400 mb-1">Ajouter des photos</label>
+            <input type="file" multiple accept="image/*" (change)="onFileSelected($event)"
+                   class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5
+                          file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                          file:text-sm file:font-semibold file:bg-[#559638] file:text-white
+                          hover:file:bg-[#447A2D]">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-400 mb-1">Notes supplémentaires</label>
+            <textarea formControlName="notes" rows="3"
+                      class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5"
+                      placeholder="Informations complémentaires..."></textarea>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex space-x-4">
+          <button type="button"
+                  routerLink="/collections"
+                  class="flex-1 py-3 px-4 text-white bg-gray-600/50 hover:bg-gray-600/70 rounded-xl transition-colors duration-300">
+            Annuler
+          </button>
+          <button type="submit"
+                  [disabled]="!collectionForm.valid"
+                  class="flex-1 flex justify-center items-center py-3 px-4 text-white
+                         bg-gradient-to-r from-[#559638] to-[#447A2D] hover:from-[#447A2D] hover:to-[#3A672B]
+                         rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span>Enregistrer</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 
