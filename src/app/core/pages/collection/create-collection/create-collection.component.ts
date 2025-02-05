@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import * as CollectionActions from '../../../state/collection/collection.actions';
 import { take } from 'rxjs/operators';
+import { User } from '../../../models/user.model';
 
 interface AppState {
   collection: {
@@ -27,7 +28,8 @@ export class CreateCollectionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private router: Router
+    private router: Router,
+    private authStore: Store<{ auth: { user: User | null } }>
   ) {}
 
   ngOnInit() {
@@ -113,20 +115,22 @@ export class CreateCollectionComponent implements OnInit {
         (sum: number, waste: any) => sum + Number(waste.weight), 0
       );
 
-      if (totalWeight < 1000) {
-        this.errorMessage = 'Le poids total doit être d\'au moins 1kg (1000g)';
-        return;
-      }
-
-      this.store.dispatch(CollectionActions.addCollection({
-        collection: {
-          ...formValue,
-          totalWeight,
-          status: 'en_attente'
+      // Récupérer l'ID de l'utilisateur connecté
+      this.authStore.select(state => state.auth.user).pipe(take(1)).subscribe(user => {
+        if (user) {
+          this.store.dispatch(CollectionActions.addCollection({
+            collection: {
+              ...formValue,
+              userId: user.id,
+              totalWeight,
+              status: 'en_attente',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            }
+          }));
+          this.router.navigate(['/collections']);
         }
-      }));
-
-      this.router.navigate(['/collections']);
+      });
     }
   }
 
@@ -154,22 +158,6 @@ export class CreateCollectionComponent implements OnInit {
       today.setHours(0, 0, 0, 0);
       
       return selectedDate >= today ? null : { pastDate: true };
-    };
-  }
-
-  private validateTotalWeight(): ValidatorFn {
-    return (formArray: AbstractControl): ValidationErrors | null => {
-      const wasteTypes = formArray.value as any[];
-      const totalWeight = wasteTypes.reduce((sum, waste) => sum + Number(waste.weight), 0);
-      
-      if (totalWeight < 1000) {
-        return { minWeight: true };
-      }
-      if (totalWeight > 10000) {
-        return { maxWeight: true };
-      }
-      
-      return null;
     };
   }
 } 

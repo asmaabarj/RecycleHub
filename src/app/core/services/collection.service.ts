@@ -19,7 +19,6 @@ export class CollectionService {
   addCollection(collection: Omit<CollectionRequest, 'id' | 'createdAt' | 'updatedAt'>): Observable<CollectionRequest> {
     const collections = this.storageService.getData<CollectionRequest[]>(this.COLLECTIONS_KEY) || [];
     
-    // Vérifications métier
     const pendingRequests = collections.filter(
       c => c.userId === collection.userId && 
       (c.status === 'en_attente' || c.status === 'validé')
@@ -30,11 +29,11 @@ export class CollectionService {
     }
 
     const totalWeight = collection.wasteTypes.reduce((sum, waste) => sum + waste.weight, 0);
-    if (totalWeight > 10000) { // 10kg en grammes
+    if (totalWeight > 10000) { 
       return throwError(() => 'Le poids total ne peut pas dépasser 10kg');
     }
 
-    if (totalWeight < 1000) { // 1kg en grammes
+    if (totalWeight < 1000) { 
       return throwError(() => 'Le poids minimum est de 1kg');
     }
 

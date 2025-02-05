@@ -135,12 +135,10 @@ export class AuthService {
     const collectorIndex = collectors.findIndex((c: User) => c.id === userId);
     
     if (collectorIndex !== -1) {
-      // Mettre à jour le collecteur
       const updatedCollector = { ...collectors[collectorIndex], ...updatedData };
       collectors[collectorIndex] = updatedCollector;
       localStorage.setItem(this.COLLECTORS_KEY, JSON.stringify(collectors));
       
-      // Mettre à jour aussi currentUser si c'est l'utilisateur connecté
       const currentUser = this.getCurrentUser();
       if (currentUser && currentUser.id === userId) {
         localStorage.setItem('currentUser', JSON.stringify(updatedCollector));
@@ -149,7 +147,6 @@ export class AuthService {
       return of(updatedCollector).pipe(delay(1000));
     }
 
-    // Si ce n'est pas un collecteur, chercher dans les utilisateurs
     const users = JSON.parse(localStorage.getItem(this.USERS_KEY) || '[]');
     const userIndex = users.findIndex((u: User) => u.id === userId);
     
@@ -157,12 +154,10 @@ export class AuthService {
       return throwError(() => new Error('Utilisateur non trouvé'));
     }
 
-    // Mettre à jour l'utilisateur
     const updatedUser = { ...users[userIndex], ...updatedData };
     users[userIndex] = updatedUser;
     localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
     
-    // Mettre à jour aussi currentUser si c'est l'utilisateur connecté
     const currentUser = this.getCurrentUser();
     if (currentUser && currentUser.id === userId) {
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { CollectionRequest } from '../../../models/collection-request.model';
+import { User } from '../../../models/user.model';
 import * as CollectionActions from '../../../state/collection/collection.actions';
 
 @Component({
@@ -17,8 +18,23 @@ export class CollectionListComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
 
-  constructor(private store: Store<{ collection: { requests: CollectionRequest[], loading: boolean, error: string | null } }>) {
-    this.collections$ = this.store.select(state => state.collection.requests);
+  constructor(
+    private store: Store<{ 
+      collection: { requests: CollectionRequest[], loading: boolean, error: string | null },
+      auth: { user: User | null }
+    }>
+  ) {
+    // Combiner les collections et l'utilisateur pour filtrer
+    this.collections$ = combineLatest([
+      this.store.select(state => state.collection.requests),
+      this.store.select(state => state.auth.user)
+    ]).pipe(
+      map(([collections, user]) => {
+        if (!user) return [];
+        return collections.filter(collection => collection.userId === user.id);
+      })
+    );
+
     this.loading$ = this.store.select(state => state.collection.loading);
     this.error$ = this.store.select(state => state.collection.error);
   }
