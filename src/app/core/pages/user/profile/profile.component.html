@@ -1,111 +1,142 @@
-<div class="min-h-screen bg-gradient-to-b from-green-50 to-emerald-100 py-8">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-green-100">
-      <!-- En-tête du profil -->
-      <div class="px-6 py-8 bg-gradient-to-r from-green-600 to-emerald-700">
-        <div class="flex flex-col md:flex-row items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <div class="w-20 h-20 rounded-full bg-white p-1">
-              <ng-container *ngIf="user$ | async as user">
-                <img *ngIf="user.profileImage" 
-                     [src]="user.profileImage" 
-                     class="w-full h-full rounded-full object-cover"
-                     alt="Photo de profil">
-                <div *ngIf="!user.profileImage" 
-                     class="w-full h-full rounded-full bg-gradient-to-br from-green-400 to-emerald-500 p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-              </ng-container>
-            </div>
-            <div>
-              <h2 class="text-2xl font-bold text-white">Mon Espace RecycleHub</h2>
-              <p class="text-green-100">Gérez votre contribution écologique</p>
-            </div>
+<div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
+  <!-- Éléments de design d'arrière-plan sophistiqués -->
+  <div class="absolute inset-0">
+    <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -top-32 -right-32 blur-3xl animate-pulse"></div>
+    <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -bottom-32 -left-32 blur-3xl animate-pulse"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-[#30323F]/30 backdrop-blur-[100px]"></div>
+  </div>
+
+  <div class="min-h-screen flex flex-col py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-white tracking-tight mb-2">Mon Profil</h1>
+      <p class="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">Gérez vos informations personnelles et vos préférences</p>
+      <div class="h-1 w-20 bg-gradient-to-r from-[#559638] to-[#447A2D] mx-auto rounded-full"></div>
+    </div>
+
+    <div class="max-w-5xl mx-auto w-full">
+      <div class="bg-[#30323F]/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl transform transition-all duration-300 hover:border-[#559638]/20">
+        <div class="relative">
+          <div class="h-52 bg-gradient-to-r from-[#559638]/20 via-[#447A2D]/20 to-[#559638]/20 rounded-t-3xl relative overflow-hidden">
           </div>
           
-          <div class="mt-4 md:mt-0 space-x-3">
-            <button
-              routerLink="/edit-profile"
-              class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400 transition-all duration-150"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-              Modifier
-            </button>
-            <button
-              (click)="onLogout()"
-              class="inline-flex items-center px-4 py-2 border border-white rounded-lg shadow-sm text-sm font-medium text-white hover:bg-white hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400 transition-all duration-150"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-              Déconnexion
-            </button>
+          <div class="px-8 pb-8">
+            <div class="flex flex-col md:flex-row items-center md:items-end -mt-32 gap-8">
+              <div class="relative group">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#559638] to-[#447A2D] rounded-full blur-xl opacity-30 group-hover:opacity-50 transition duration-500"></div>
+                <div class="relative w-48 h-48 rounded-full bg-[#383B4A] p-2 ring-4 ring-[#30323F] shadow-2xl">
+                  <ng-container *ngIf="user$ | async as user">
+                    <img *ngIf="user.profileImage" 
+                         [src]="user.profileImage" 
+                         class="w-full h-full rounded-full object-cover"
+                         alt="Photo de profil">
+                    <div *ngIf="!user.profileImage" 
+                         class="w-full h-full rounded-full bg-gradient-to-br from-[#559638] to-[#447A2D] p-8">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="flex flex-col md:flex-row items-center md:items-end justify-between flex-grow gap-4">
+                <div class="text-center md:text-left">
+                  <ng-container *ngIf="user$ | async as user">
+                    <h2 class="text-3xl font-bold text-white mb-3">{{user.firstName}} {{user.lastName}}</h2>
+                    <div class="flex flex-wrap items-center gap-3">
+                      <span class="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-[#559638]/20 text-[#559638] border border-[#559638]/20">
+                        {{user.userType === 'collector' ? 'Collecteur' : 'Particulier'}}
+                      </span>
+                      <span class="inline-flex items-center text-gray-400">
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        {{user.city}}
+                      </span>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="flex gap-3">
+                  <button routerLink="/edit-profile"
+                          class="inline-flex items-center px-6 py-2.5 rounded-xl text-white bg-gradient-to-r from-[#559638] to-[#447A2D] hover:from-[#447A2D] hover:to-[#3A672B] transition-all duration-300 shadow-lg hover:shadow-[#559638]/25 transform hover:translate-y-[-2px]">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                    Modifier
+                  </button>
+                  <button (click)="onLogout()"
+                          class="inline-flex items-center px-6 py-2.5 rounded-xl text-white bg-[#383B4A] hover:bg-[#444752] transition-all duration-300 shadow-lg hover:shadow-white/10 transform hover:translate-y-[-2px]">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Déconnexion
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Informations du profil -->
-      <div class="bg-white">
-        <dl class="divide-y divide-gray-100">
-          <ng-container *ngIf="user$ | async as user">
-            <!-- Informations personnelles -->
-            <div class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-green-50 transition-colors duration-150">
-              <dt class="text-sm font-medium text-gray-600">Nom complet</dt>
-              <dd class="text-sm text-gray-900 col-span-2">{{user.firstName}} {{user.lastName}}</dd>
-            </div>
+        <div class="p-8 pt-0">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <ng-container *ngIf="user$ | async as user">
+              <div class="group bg-gradient-to-br from-[#383B4A]/40 to-[#383B4A]/30 rounded-2xl p-8 hover:from-[#383B4A]/50 hover:to-[#383B4A]/40 transition-all duration-300 border border-white/10 hover:border-[#559638]/30 shadow-xl">
+                <div class="flex items-center mb-6">
+                  <svg class="w-5 h-5 text-[#559638] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <h3 class="text-lg font-semibold text-white">Informations personnelles</h3>
+                </div>
+                <div class="space-y-4">
+                  <div class="group-hover:translate-x-1 transition-transform duration-300">
+                    <p class="text-sm text-gray-400 mb-1">Email</p>
+                    <p class="text-white font-medium">{{user.email}}</p>
+                  </div>
+                  <div class="group-hover:translate-x-1 transition-transform duration-300">
+                    <p class="text-sm text-gray-400 mb-1">Téléphone</p>
+                    <p class="text-white font-medium">{{user.phone}}</p>
+                  </div>
+                  <div class="group-hover:translate-x-1 transition-transform duration-300">
+                    <p class="text-sm text-gray-400 mb-1">Date de naissance</p>
+                    <p class="text-white font-medium">{{user.birthDate | date:'dd/MM/yyyy'}}</p>
+                  </div>
+                </div>
+              </div>
 
-            <div class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-green-50 transition-colors duration-150">
-              <dt class="text-sm font-medium text-gray-600">Email</dt>
-              <dd class="text-sm text-gray-900 col-span-2">{{user.email}}</dd>
-            </div>
+              <div class="group bg-gradient-to-br from-[#383B4A]/40 to-[#383B4A]/30 rounded-2xl p-8 hover:from-[#383B4A]/50 hover:to-[#383B4A]/40 transition-all duration-300 border border-white/10 hover:border-[#559638]/30 shadow-xl">
+                <div class="flex items-center mb-6">
+                  <svg class="w-5 h-5 text-[#559638] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  <h3 class="text-lg font-semibold text-white">Adresse</h3>
+                </div>
+                <div class="space-y-4">
+                  <div class="group-hover:translate-x-1 transition-transform duration-300">
+                    <p class="text-sm text-gray-400 mb-1">Adresse complète</p>
+                    <p class="text-white font-medium">{{user.address}}</p>
+                  </div>
+                  <div class="group-hover:translate-x-1 transition-transform duration-300">
+                    <p class="text-sm text-gray-400 mb-1">Ville</p>
+                    <p class="text-white font-medium">{{user.city}}</p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
 
-            <div class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-green-50 transition-colors duration-150">
-              <dt class="text-sm font-medium text-gray-600">Adresse</dt>
-              <dd class="text-sm text-gray-900 col-span-2">{{user.address}}</dd>
-            </div>
-
-            <div class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-green-50 transition-colors duration-150">
-              <dt class="text-sm font-medium text-gray-600">Ville</dt>
-              <dd class="text-sm text-gray-900 col-span-2">{{user.city}}</dd>
-            </div>
-
-            <div class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-green-50 transition-colors duration-150">
-              <dt class="text-sm font-medium text-gray-600">Téléphone</dt>
-              <dd class="text-sm text-gray-900 col-span-2">{{user.phone}}</dd>
-            </div>
-
-            <div class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-green-50 transition-colors duration-150">
-              <dt class="text-sm font-medium text-gray-600">Date de naissance</dt>
-              <dd class="text-sm text-gray-900 col-span-2">{{user.birthDate | date:'dd/MM/yyyy'}}</dd>
-            </div>
-
-            <div class="px-6 py-4 grid grid-cols-3 gap-4 hover:bg-green-50 transition-colors duration-150">
-              <dt class="text-sm font-medium text-gray-600">Type de compte</dt>
-              <dd class="text-sm text-gray-900 col-span-2">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" 
-                      [ngClass]="user.userType === 'collector' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'">
-                  {{user.userType === 'collector' ? 'Collecteur' : 'Particulier'}}
-                </span>
-              </dd>
-            </div>
-          </ng-container>
-        </dl>
-
-        <!-- Bouton de suppression de compte -->
-        <div class="px-6 py-4 border-t border-gray-100">
-          <button
-            (click)="onDeleteAccount()"
-            class="inline-flex items-center px-4 py-2 border border-red-300 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-150"
-          >
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-            Supprimer mon compte
-          </button>
+          <div class="mt-10 pt-8 border-t border-white/10">
+            <button (click)="onDeleteAccount()"
+                    class="inline-flex items-center px-6 py-2.5 rounded-xl text-red-400 bg-red-500/10 hover:bg-red-500/20 transition-all duration-300 border border-red-500/20 transform hover:translate-y-[-2px]">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Supprimer mon compte
+            </button>
+          </div>
         </div>
       </div>
     </div>

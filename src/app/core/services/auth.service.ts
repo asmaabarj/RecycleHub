@@ -135,8 +135,27 @@ export class AuthService {
   updateUserProfile(userId: string, updatedUser: User): Observable<User> {
     return of(updatedUser).pipe(
       map(user => {
-        // Mise à jour dans le localStorage
+        // Mise à jour dans le localStorage pour currentUser
         localStorage.setItem('currentUser', JSON.stringify(user));
+        
+        // Mise à jour dans la liste des utilisateurs
+        const users = JSON.parse(localStorage.getItem(this.USERS_KEY) || '[]');
+        const userIndex = users.findIndex((u: User) => u.id === userId);
+        
+        if (userIndex !== -1) {
+          users[userIndex] = user;
+          localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
+        }
+        
+        // Mise à jour dans la liste des collecteurs si nécessaire
+        const collectors = JSON.parse(localStorage.getItem(this.COLLECTORS_KEY) || '[]');
+        const collectorIndex = collectors.findIndex((c: User) => c.id === userId);
+        
+        if (collectorIndex !== -1) {
+          collectors[collectorIndex] = user;
+          localStorage.setItem(this.COLLECTORS_KEY, JSON.stringify(collectors));
+        }
+        
         return user;
       })
     );

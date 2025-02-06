@@ -58,5 +58,10 @@ export const authReducer = createReducer(
     user: null,
     isAuthenticated: false,
     error: null
+  })),
+  on(AuthActions.updateProfile, (state, { user }) => ({
+    ...state,
+    user,
+    error: null
   }))
 );

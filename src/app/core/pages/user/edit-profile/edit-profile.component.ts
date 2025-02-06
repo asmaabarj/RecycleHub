@@ -5,6 +5,7 @@ import { RouterLink, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { User } from '../../../models/user.model';
 import { AuthService } from '../../../services/auth.service';
+import * as AuthActions from '../../../state/auth/auth.actions';
 
 @Component({
   selector: 'app-edit-profile',
@@ -87,7 +88,10 @@ export class EditProfileComponent implements OnInit {
 
       this.authService.updateUserProfile(this.currentUser.id, updatedUser).subscribe({
         next: (user) => {
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.store.dispatch(AuthActions.updateProfile({ user }));
+          
+          this.errorMessage = '';
+          
           this.router.navigate(['/profile']);
         },
         error: (error) => {

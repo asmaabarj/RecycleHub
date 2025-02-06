@@ -18,4 +18,5 @@ export class SidebarComponent {
   constructor(private store: Store<{ auth: { user: User | null } }>) {
     this.user$ = this.store.select(state => state.auth.user);
   }
+  
 }
