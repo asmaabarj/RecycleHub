@@ -15,6 +15,7 @@ import { StorageService } from '../../../services/storage.service';
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   errorMessage: string = '';
+  selectedImage: string | null = null;
   
   constructor(
     private fb: FormBuilder,
@@ -35,12 +36,27 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImage = e.target.result;
+        this.registerForm.patchValue({
+          profileImage: this.selectedImage
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit() {
     if (this.registerForm.valid) {
       const formValue = this.registerForm.value;
       const userData = {
         ...formValue,
         birthDate: new Date(formValue.birthDate),
+        profileImage: this.selectedImage,
         userType: 'particular' as const
       };
 
