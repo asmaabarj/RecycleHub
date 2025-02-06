@@ -10,7 +10,6 @@ import { AppState } from '../app.state';
 
 interface CollectionRequest {
   status: string;
-  // ... autres propriétés
 }
 
 @Injectable()
@@ -23,7 +22,6 @@ export class CollectionEffects {
         CollectionActions.deleteCollection
       ),
       tap(() => {
-        // Sauvegarder l'état actuel après chaque modification
         const currentState = this.store.select(state => state.collection.requests);
         currentState.pipe(take(1)).subscribe(requests => {
           localStorage.setItem('collections', JSON.stringify(requests));

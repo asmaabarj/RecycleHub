@@ -46,7 +46,6 @@ export class CreateCollectionComponent implements OnInit {
       photos: [[]]
     });
 
-    // Ajouter le premier type de déchet par défaut
     this.addWasteType();
   }
 
@@ -75,7 +74,6 @@ export class CreateCollectionComponent implements OnInit {
   }
 
   private validateCollection(formValue: any): string | null {
-    // Vérifier le nombre de demandes en attente
     let pendingRequestsCount = 0;
     this.store.select(state => state.collection.requests)
       .pipe(take(1))
@@ -87,7 +85,6 @@ export class CreateCollectionComponent implements OnInit {
       return 'Vous avez déjà 3 demandes en attente';
     }
 
-    // Vérifier le poids total
     const totalWeight = formValue.wasteTypes.reduce(
       (sum: number, waste: any) => sum + Number(waste.weight), 0
     );
@@ -115,7 +112,6 @@ export class CreateCollectionComponent implements OnInit {
         (sum: number, waste: any) => sum + Number(waste.weight), 0
       );
 
-      // Récupérer l'ID de l'utilisateur connecté
       this.authStore.select(state => state.auth.user).pipe(take(1)).subscribe(user => {
         if (user) {
           this.store.dispatch(CollectionActions.addCollection({

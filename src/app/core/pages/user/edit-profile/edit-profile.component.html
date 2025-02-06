@@ -1,5 +1,4 @@
 <div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
-  <!-- Éléments de design d'arrière-plan sophistiqués -->
   <div class="absolute inset-0">
     <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -top-32 -right-32 blur-3xl animate-pulse"></div>
     <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -bottom-32 -left-32 blur-3xl animate-pulse"></div>
@@ -7,22 +6,18 @@
   </div>
 
   <div class="min-h-screen flex flex-col py-16 px-4 sm:px-6 lg:px-8 relative z-10">
-    <!-- En-tête -->
     <div class="text-center mb-8">
       <h1 class="text-4xl font-bold text-white tracking-tight mb-2">Modifier mon profil</h1>
       <p class="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">Personnalisez vos informations personnelles</p>
       <div class="h-1 w-20 bg-gradient-to-r from-[#559638] to-[#447A2D] mx-auto rounded-full"></div>
     </div>
 
-    <!-- Formulaire -->
     <div class="max-w-5xl mx-auto w-full">
       <div class="bg-[#30323F]/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl">
         <div class="relative">
-          <!-- Bannière décorative -->
           <div class="h-52 bg-gradient-to-r from-[#559638]/20 via-[#447A2D]/20 to-[#559638]/20 rounded-t-3xl relative overflow-hidden">
           </div>
 
-          <!-- Photo de profil -->
           <div class="px-8 pb-6">
             <div class="flex flex-col items-center -mt-32">
               <div class="relative group mb-6">
@@ -41,7 +36,6 @@
                 </div>
               </div>
               
-              <!-- Input file stylisé -->
               <input
                 type="file"
                 (change)="onFileSelected($event)"
@@ -54,7 +48,6 @@
           </div>
         </div>
 
-        <!-- Formulaire -->
         <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="p-8">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Informations personnelles -->
@@ -120,7 +113,6 @@
               </div>
             </div>
 
-            <!-- Coordonnées -->
             <div class="group bg-gradient-to-br from-[#383B4A]/40 to-[#383B4A]/30 rounded-2xl p-8 hover:from-[#383B4A]/50 hover:to-[#383B4A]/40 transition-all duration-300 border border-white/10 hover:border-[#559638]/30 shadow-xl">
               <div class="flex items-center mb-6">
                 <svg class="w-5 h-5 text-[#559638] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,13 +159,11 @@
             </div>
           </div>
 
-          <!-- Messages d'erreur -->
           <div *ngIf="errorMessage" 
                class="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
             {{ errorMessage }}
           </div>
 
-          <!-- Boutons d'action -->
           <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-white/10">
             <button
               type="button"

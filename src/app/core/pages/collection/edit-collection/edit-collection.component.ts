@@ -46,7 +46,6 @@ export class EditCollectionComponent implements OnInit {
       photos: [this.collection.photos || []]
     });
 
-    // Initialiser les types de déchets existants
     this.collection.wasteTypes.forEach(waste => {
       this.addWasteType(waste);
     });

@@ -30,7 +30,6 @@ export class CollectionGuard implements CanActivate {
           return this.router.createUrlTree(['/profile']);
         }
 
-        // Si on est sur une page de détail/édition, vérifier que l'utilisateur est propriétaire
         const collectionId = route.params['id'];
         if (collectionId) {
           const collection = collections.find(c => c.id === collectionId);

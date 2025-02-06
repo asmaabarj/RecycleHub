@@ -1,5 +1,4 @@
 <div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
-  <!-- Éléments de design d'arrière-plan -->
   <div class="absolute inset-0">
     <div class="absolute h-64 w-64 rounded-full bg-[#559638]/5 -top-20 -right-20 blur-3xl"></div>
     <div class="absolute h-64 w-64 rounded-full bg-[#559638]/5 -bottom-20 -left-20 blur-3xl"></div>
@@ -7,21 +6,17 @@
   </div>
 
   <div class="min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
-    <!-- En-tête -->
     <div class="text-center mb-8">
       <h1 class="text-4xl font-bold text-white tracking-tight mb-2">Modifier la Demande de Collecte</h1>
       <div class="h-1 w-20 bg-gradient-to-r from-[#559638] to-[#447A2D] mx-auto rounded-full"></div>
     </div>
 
-    <!-- Formulaire -->
     <div class="bg-[#30323F]/80 backdrop-blur-xl rounded-3xl p-8 max-w-2xl w-full shadow-[0_8px_32px_rgb(0,0,0,0.3)] border border-white/5">
       <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        <!-- Message d'erreur -->
         <div *ngIf="errorMessage" class="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
           {{ errorMessage }}
         </div>
 
-        <!-- Types de déchets -->
         <div formArrayName="wasteTypes" class="space-y-4">
           <div *ngFor="let waste of wasteTypes.controls; let i=index" [formGroupName]="i"
                class="p-4 bg-[#383B4A]/30 rounded-xl border border-white/5">
@@ -65,7 +60,6 @@
           + Ajouter un type de déchet
         </button>
 
-        <!-- Autres champs -->
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-400 mb-1">Adresse de collecte</label>
@@ -91,7 +85,6 @@
             </div>
           </div>
 
-          <!-- Photos existantes -->
           <div *ngIf="collectionForm.get('photos')?.value?.length">
             <label class="block text-sm font-medium text-gray-400 mb-2">Photos actuelles</label>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -109,7 +102,6 @@
             </div>
           </div>
 
-          <!-- Upload de nouvelles photos -->
           <div>
             <label class="block text-sm font-medium text-gray-400 mb-1">Ajouter des photos</label>
             <input type="file" multiple accept="image/*" (change)="onFileSelected($event)"
@@ -127,7 +119,6 @@
           </div>
         </div>
 
-        <!-- Actions -->
         <div class="flex space-x-4">
           <button type="button"
                   routerLink="/collections"

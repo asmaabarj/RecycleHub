@@ -1,5 +1,4 @@
 <div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
-  <!-- Éléments de design d'arrière-plan sophistiqués -->
   <div class="absolute inset-0">
     <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -top-32 -right-32 blur-3xl animate-pulse"></div>
     <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -bottom-32 -left-32 blur-3xl animate-pulse"></div>
@@ -130,9 +129,11 @@
 
           <div class="mt-10 pt-8 border-t border-white/10">
             <button (click)="onDeleteAccount()"
-                    class="inline-flex items-center px-6 py-2.5 rounded-xl text-red-400 bg-red-500/10 hover:bg-red-500/20 transition-all duration-300 border border-red-500/20 transform hover:translate-y-[-2px]">
+                    class="inline-flex items-center px-6 py-2.5 rounded-xl text-red-400 bg-red-500/10 hover:bg-red-500/20 
+                           transition-all duration-300 border border-red-500/20 transform hover:translate-y-[-2px]">
               <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
               Supprimer mon compte
             </button>
@@ -142,3 +143,11 @@
     </div>
   </div>
 </div>
+
+<app-delete-alert 
+  *ngIf="showDeleteAlert"
+  [title]="'Supprimer le compte'"
+  [message]="'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et toutes vos données seront perdues.'"
+  (onConfirm)="handleDeleteConfirm()"
+  (onCancel)="handleDeleteCancel()">
+</app-delete-alert>

@@ -1,5 +1,4 @@
 <div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
-    <!-- Éléments de design d'arrière-plan -->
     <div class="absolute inset-0">
       <div class="absolute h-64 w-64 rounded-full bg-[#559638]/5 -top-20 -right-20 blur-3xl"></div>
       <div class="absolute h-64 w-64 rounded-full bg-[#559638]/5 -bottom-20 -left-20 blur-3xl"></div>
@@ -7,14 +6,12 @@
     </div>
   
     <div class="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
-      <!-- En-tête de la page -->
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-white tracking-tight mb-2">RecycleHub</h1>
         <div class="h-1 w-20 bg-gradient-to-r from-[#559638] to-[#447A2D] mx-auto rounded-full"></div>
       </div>
   
       <div class="bg-[#30323F]/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 max-w-xl mx-auto w-full shadow-[0_8px_32px_rgb(0,0,0,0.3)] border border-white/5">
-        <!-- En-tête du formulaire -->
         <div class="text-center space-y-4 mb-8">
           <div class="inline-flex p-3 rounded-full bg-[#559638]/10 mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,7 +24,6 @@
     
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
             <div class="space-y-5">
-                <!-- Email -->
         <div>
             <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,7 +47,6 @@
           </div>
         </div>
 
-         <!-- Mot de passe -->
          <div>
             <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +71,6 @@
           </div>
         </div>
 
-       <!-- Nom et Prénom -->
        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
@@ -117,7 +111,6 @@
       </div>
 
 
-        <!-- Adresse -->
         <div>
             <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -137,7 +130,6 @@
             L'adresse est requise
           </div>
         </div>
-<!-- Ville -->
         <div>
             <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
               Ville
@@ -153,7 +145,6 @@
             La ville est requise
           </div>
         </div>
-        <!-- Téléphone -->
         <div>
             <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -178,7 +169,6 @@
           </div>
         </div>
 
-        <!-- Date de naissance -->
         <div>
             <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -197,7 +187,6 @@
           </div>
         </div>
 
-         <!-- Photo de profil -->
          <div>
             <label class="flex items-center text-gray-300 text-sm font-medium mb-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -206,7 +195,6 @@
               Photo de profil (optionnel)
             </label>
             
-            <!-- Aperçu de l'image -->
             <div *ngIf="selectedImage" class="mb-3">
               <img [src]="selectedImage" class="w-24 h-24 rounded-full object-cover mx-auto border-2 border-[#559638]">
             </div>
@@ -224,7 +212,6 @@
           </div>
         </div>
 
-        <!-- Bouton d'inscription -->
         <button
           type="submit"
           [disabled]="!registerForm.valid"
@@ -236,7 +223,6 @@
           </svg>
         </button>
 
-        <!-- Séparateur -->
         <div class="relative my-6">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-600"></div>
@@ -246,7 +232,6 @@
           </div>
         </div>
 
-        <!-- Connexion -->
         <div class="text-center">
           <p class="text-gray-300 text-sm">
             Déjà inscrit ? 
@@ -258,7 +243,6 @@
       </form>
     </div>
 
-    <!-- Footer -->
     <div class="mt-8 text-center text-gray-400 text-sm">
       © 2024 RecycleHub. Tous droits réservés.
     </div>

@@ -147,7 +147,6 @@ export class AuthService {
           localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
         }
         
-        // Mise à jour dans la liste des collecteurs si nécessaire
         const collectors = JSON.parse(localStorage.getItem(this.COLLECTORS_KEY) || '[]');
         const collectorIndex = collectors.findIndex((c: User) => c.id === userId);
         

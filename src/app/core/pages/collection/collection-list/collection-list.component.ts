@@ -24,7 +24,6 @@ export class CollectionListComponent implements OnInit {
       auth: { user: User | null }
     }>
   ) {
-    // Combiner les collections et l'utilisateur pour filtrer
     this.collections$ = combineLatest([
       this.store.select(state => state.collection.requests),
       this.store.select(state => state.auth.user)

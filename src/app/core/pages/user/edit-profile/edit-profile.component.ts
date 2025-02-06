@@ -28,7 +28,6 @@ export class EditProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Récupérer l'utilisateur depuis le localStorage
     const user = this.authService.getCurrentUser();
     if (user) {
       this.currentUser = user;
