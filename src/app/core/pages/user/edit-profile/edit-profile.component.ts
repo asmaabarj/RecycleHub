@@ -44,6 +44,7 @@ export class EditProfileComponent implements OnInit {
       email: [user.email, [Validators.required, Validators.email]],
       phone: [user.phone, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       address: [user.address, Validators.required],
+      city: [user.city, Validators.required],
       birthDate: [this.formatDate(user.birthDate), Validators.required],
       profileImage: [user.profileImage]
     });
