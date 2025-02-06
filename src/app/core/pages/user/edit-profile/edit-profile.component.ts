@@ -17,6 +17,7 @@ export class EditProfileComponent implements OnInit {
   editForm!: FormGroup;
   currentUser: User | null = null;
   errorMessage: string = '';
+  selectedImage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -60,17 +61,31 @@ export class EditProfileComponent implements OnInit {
     return [year, month, day].join('-');
   }
 
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.selectedImage = e.target?.result as string;
+        this.editForm.patchValue({
+          profileImage: this.selectedImage
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit() {
     if (this.editForm.valid && this.currentUser) {
       const updatedUser: User = {
         ...this.currentUser,
         ...this.editForm.value,
-        birthDate: new Date(this.editForm.value.birthDate)
+        birthDate: new Date(this.editForm.value.birthDate),
+        profileImage: this.selectedImage || this.currentUser.profileImage
       };
 
       this.authService.updateUserProfile(this.currentUser.id, updatedUser).subscribe({
         next: (user) => {
-          // Mettre à jour le localStorage avec les nouvelles informations
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.router.navigate(['/profile']);
         },

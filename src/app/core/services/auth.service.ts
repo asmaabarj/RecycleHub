@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -129,41 +129,14 @@ export class AuthService {
     return collectorsJson ? JSON.parse(collectorsJson) : [];
   }
 
-  updateUserProfile(userId: string, updatedData: Partial<User>): Observable<User> {
-    // Vérifier d'abord dans les collecteurs
-    const collectors = JSON.parse(localStorage.getItem(this.COLLECTORS_KEY) || '[]');
-    const collectorIndex = collectors.findIndex((c: User) => c.id === userId);
-    
-    if (collectorIndex !== -1) {
-      const updatedCollector = { ...collectors[collectorIndex], ...updatedData };
-      collectors[collectorIndex] = updatedCollector;
-      localStorage.setItem(this.COLLECTORS_KEY, JSON.stringify(collectors));
-      
-      const currentUser = this.getCurrentUser();
-      if (currentUser && currentUser.id === userId) {
-        localStorage.setItem('currentUser', JSON.stringify(updatedCollector));
-      }
-      
-      return of(updatedCollector).pipe(delay(1000));
-    }
-
-    const users = JSON.parse(localStorage.getItem(this.USERS_KEY) || '[]');
-    const userIndex = users.findIndex((u: User) => u.id === userId);
-    
-    if (userIndex === -1) {
-      return throwError(() => new Error('Utilisateur non trouvé'));
-    }
-
-    const updatedUser = { ...users[userIndex], ...updatedData };
-    users[userIndex] = updatedUser;
-    localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
-    
-    const currentUser = this.getCurrentUser();
-    if (currentUser && currentUser.id === userId) {
-      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-    }
-
-    return of(updatedUser).pipe(delay(1000));
+  updateUserProfile(userId: string, updatedUser: User): Observable<User> {
+    return of(updatedUser).pipe(
+      map(user => {
+        // Mise à jour dans le localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        return user;
+      })
+    );
   }
 
   deleteAccount(userId: string): Observable<void> {
