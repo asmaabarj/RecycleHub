@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
@@ -23,6 +23,32 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) {}
 
+  pastDateValidator(): ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+
+      const inputDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); 
+
+      if (inputDate >= today) {
+        return { futureDateNotAllowed: true };
+      }
+
+      const minAge = 13;
+      const minAgeDate = new Date();
+      minAgeDate.setFullYear(minAgeDate.getFullYear() - minAge);
+      
+      if (inputDate > minAgeDate) {
+        return { minimumAge: true };
+      }
+
+      return null;
+    };
+  }
+
   ngOnInit() {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -32,7 +58,7 @@ export class RegisterComponent implements OnInit {
       address: ['', Validators.required],
       city: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      birthDate: ['', Validators.required],
+      birthDate: ['', [Validators.required, this.pastDateValidator()]],
       profileImage: ['']
     });
   }
@@ -68,6 +94,8 @@ export class RegisterComponent implements OnInit {
       } else {
         this.errorMessage = 'Un utilisateur avec cet email existe déjà';
       }
+    } else {
+      this.errorMessage = 'Veuillez remplir correctement tous les champs requis';
     }
   }
 }

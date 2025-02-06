@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -27,6 +27,56 @@ export class EditProfileComponent implements OnInit {
     private authService: AuthService
   ) {}
 
+  pastDateValidator(): ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+
+      const inputDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); 
+
+      if (inputDate >= today) {
+        return { futureDateNotAllowed: true };
+      }
+
+      const minAge = 13;
+      const minAgeDate = new Date();
+      minAgeDate.setFullYear(minAgeDate.getFullYear() - minAge);
+      
+      if (inputDate > minAgeDate) {
+        return { minimumAge: true };
+      }
+
+      return null;
+    };
+  }
+
+  emailExistsValidator(currentEmail: string) {
+    return (control: AbstractControl): Promise<ValidationErrors | null> => {
+      return new Promise(resolve => {
+        if (control.value === currentEmail) {
+          resolve(null);
+          return;
+        }
+
+        this.authService.checkEmailExists(control.value).subscribe({
+          next: (exists) => {
+            if (exists) {
+              resolve({ emailExists: true });
+            } else {
+              resolve(null);
+            }
+          },
+          error: () => {
+            resolve(null);
+          }
+        });
+      });
+    };
+  }
+
   ngOnInit() {
     const user = this.authService.getCurrentUser();
     if (user) {
@@ -41,11 +91,17 @@ export class EditProfileComponent implements OnInit {
     this.editForm = this.fb.group({
       firstName: [user.firstName, Validators.required],
       lastName: [user.lastName, Validators.required],
-      email: [user.email, [Validators.required, Validators.email]],
+      email: [
+        user.email, 
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.emailExistsValidator(user.email)],
+        }
+      ],
       phone: [user.phone, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       address: [user.address, Validators.required],
       city: [user.city, Validators.required],
-      birthDate: [this.formatDate(user.birthDate), Validators.required],
+      birthDate: [this.formatDate(user.birthDate), [Validators.required, this.pastDateValidator()]],
       profileImage: [user.profileImage]
     });
   }
@@ -88,13 +144,15 @@ export class EditProfileComponent implements OnInit {
       this.authService.updateUserProfile(this.currentUser.id, updatedUser).subscribe({
         next: (user) => {
           this.store.dispatch(AuthActions.updateProfile({ user }));
-          
           this.errorMessage = '';
-          
           this.router.navigate(['/profile']);
         },
         error: (error) => {
-          this.errorMessage = 'Erreur lors de la mise à jour du profil';
+          if (error.status === 409) {
+            this.errorMessage = 'Cette adresse email est déjà utilisée';
+          } else {
+            this.errorMessage = 'Erreur lors de la mise à jour du profil';
+          }
           console.error('Erreur:', error);
         }
       });

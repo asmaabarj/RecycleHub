@@ -181,4 +181,9 @@ export class AuthService {
 
     return throwError(() => new Error('Utilisateur non trouvé'));
   }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return of(users.some((user: any) => user.email === email));
+  }
 }
