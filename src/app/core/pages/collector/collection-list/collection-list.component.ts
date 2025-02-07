@@ -73,6 +73,85 @@ export class CollectorCollectionListComponent implements OnInit {
         collectionId, 
         status: 'occupee' 
       }));
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    }
+  }
+
+  startCollection(collectionId: string) {
+    const collectionsStr = localStorage.getItem('collections');
+    if (collectionsStr) {
+      const collections = JSON.parse(collectionsStr);
+      
+      const updatedCollections = collections.map((collection: CollectionRequest) => {
+        if (collection.id === collectionId) {
+          return { ...collection, status: 'en_cours' };
+        }
+        return collection;
+      });
+
+      localStorage.setItem('collections', JSON.stringify(updatedCollections));
+      
+      this.store.dispatch(CollectionActions.updateCollectionStatus({ 
+        collectionId, 
+        status: 'en_cours' 
+      }));
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    }
+  }
+
+  rejectCollection(collectionId: string) {
+    const collectionsStr = localStorage.getItem('collections');
+    if (collectionsStr) {
+      const collections = JSON.parse(collectionsStr);
+      
+      const updatedCollections = collections.map((collection: CollectionRequest) => {
+        if (collection.id === collectionId) {
+          return { ...collection, status: 'rejetee' };
+        }
+        return collection;
+      });
+
+      localStorage.setItem('collections', JSON.stringify(updatedCollections));
+      
+      this.store.dispatch(CollectionActions.updateCollectionStatus({ 
+        collectionId, 
+        status: 'rejetee' 
+      }));
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
+    }
+  }
+
+  validateCollection(collectionId: string) {
+    const collectionsStr = localStorage.getItem('collections');
+    if (collectionsStr) {
+      const collections = JSON.parse(collectionsStr);
+      
+      const updatedCollections = collections.map((collection: CollectionRequest) => {
+        if (collection.id === collectionId) {
+          return { ...collection, status: 'validee' };
+        }
+        return collection;
+      });
+
+      localStorage.setItem('collections', JSON.stringify(updatedCollections));
+      
+      this.store.dispatch(CollectionActions.updateCollectionStatus({ 
+        collectionId, 
+        status: 'validee' 
+      }));
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     }
   }
 
