@@ -90,14 +90,21 @@ recyclehub/
 ```
 
 ## 📸 Captures d'écran
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image-4.png)
-![alt text](image-5.png)
-![alt text](image-6.png)
-![alt text](image-7.png)
+
+<p align="center">
+  <img src="image-1.png" width="300">
+  <img src="image-2.png" width="300">
+  <img src="image-3.png" width="300">
+  <img src="image-4.png" width="300">
+</p>
+
+<p align="center">
+  <img src="image-5.png" width="300">
+  <img src="image-6.png" width="300">
+  <img src="image-7.png" width="300">
+  <img src="image-8.png" width="300">
+</p>
+
 ## 🔒 Sécurité
 - Authentification sécurisée
 - Protection des routes avec Guards
