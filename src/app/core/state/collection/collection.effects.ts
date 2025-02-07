@@ -16,11 +16,7 @@ interface CollectionRequest {
 export class CollectionEffects {
   saveCollections$ = createEffect(() => 
     this.actions$.pipe(
-      ofType(
-        CollectionActions.addCollection,
-        CollectionActions.updateCollection,
-        CollectionActions.deleteCollection
-      ),
+      ofType(CollectionActions.addCollection),
       tap(() => {
         const currentState = this.store.select(state => state.collection.requests);
         currentState.pipe(take(1)).subscribe(requests => {
@@ -45,40 +41,7 @@ export class CollectionEffects {
   addCollection$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CollectionActions.addCollection),
-      withLatestFrom(this.store.select(state => state.collection.requests)),
-      map(([action, requests]) => {
-        const pendingRequests = requests.filter((req: CollectionRequest) => req.status === 'en_attente');
-        if (pendingRequests.length >= 3) {
-          return CollectionActions.addCollectionFailure({
-            error: 'Vous avez déjà atteint la limite de 3 demandes en attente'
-          });
-        }
-        return CollectionActions.addCollectionSuccess({ collection: action.collection });
-      })
-    )
-  );
-
-  updateCollection$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CollectionActions.updateCollection),
-      mergeMap(({ id, collection }) =>
-        this.collectionService.updateCollection(id, collection).pipe(
-          map(updatedCollection => CollectionActions.updateCollectionSuccess({ collection: updatedCollection })),
-          catchError(error => of(CollectionActions.collectionError({ error: error.message })))
-        )
-      )
-    )
-  );
-
-  deleteCollection$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CollectionActions.deleteCollection),
-      mergeMap(({ id }) =>
-        this.collectionService.deleteCollection(id).pipe(
-          map(() => CollectionActions.deleteCollectionSuccess({ id })),
-          catchError(error => of(CollectionActions.collectionError({ error: error.message })))
-        )
-      )
+      map(action => CollectionActions.addCollectionSuccess({ collection: action.collection }))
     )
   );
 

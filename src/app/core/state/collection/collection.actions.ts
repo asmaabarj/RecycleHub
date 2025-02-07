@@ -22,24 +22,6 @@ export const addCollectionFailure = createAction(
   props<{ error: string }>()
 );
 
-export const updateCollection = createAction(
-  '[Collection] Update Collection',
-  props<{ id: string; collection: Partial<CollectionRequest> }>()
-);
-export const updateCollectionSuccess = createAction(
-  '[Collection] Update Collection Success',
-  props<{ collection: CollectionRequest }>()
-);
-
-export const deleteCollection = createAction(
-  '[Collection] Delete Collection',
-  props<{ id: string }>()
-);
-export const deleteCollectionSuccess = createAction(
-  '[Collection] Delete Collection Success',
-  props<{ id: string }>()
-);
-
 export const collectionError = createAction(
   '[Collection] Error',
   props<{ error: string }>()

@@ -38,8 +38,8 @@ export class CreateCollectionComponent implements OnInit {
 
   private initForm() {
     this.collectionForm = this.fb.group({
-      wasteTypes: this.fb.array([]),
-      collectionAddress: ['', [Validators.required]],
+      wasteTypes: this.fb.array([], [Validators.required]),
+      city: ['', [Validators.required]],
       collectionDate: ['', [Validators.required, this.futureDateValidator()]],
       timeSlot: ['', [Validators.required]],
       notes: [''],
@@ -55,7 +55,7 @@ export class CreateCollectionComponent implements OnInit {
 
   addWasteType() {
     const wasteType = this.fb.group({
-      type: ['', Validators.required],
+      type: ['', [Validators.required]],
       weight: ['', [Validators.required, Validators.min(100)]]
     });
     this.wasteTypes.push(wasteType);
@@ -74,17 +74,8 @@ export class CreateCollectionComponent implements OnInit {
   }
 
   private validateCollection(formValue: any): string | null {
-    let pendingRequestsCount = 0;
     this.store.select(state => state.collection.requests)
       .pipe(take(1))
-      .subscribe(requests => {
-        pendingRequestsCount = requests.filter(req => req.status === 'en_attente').length;
-      });
-
-    if (pendingRequestsCount >= 3) {
-      return 'Vous avez déjà 3 demandes en attente';
-    }
-
     const totalWeight = formValue.wasteTypes.reduce(
       (sum: number, waste: any) => sum + Number(waste.weight), 0
     );
@@ -155,5 +146,14 @@ export class CreateCollectionComponent implements OnInit {
       
       return selectedDate >= today ? null : { pastDate: true };
     };
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.collectionForm.get(fieldName);
+    return field ? field.invalid && (field.dirty || field.touched) : false;
+  }
+
+  getWasteTypeControl(index: number, controlName: string) {
+    return this.wasteTypes.at(index).get(controlName);
   }
 } 

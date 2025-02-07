@@ -19,15 +19,6 @@ export class CollectionService {
   addCollection(collection: Omit<CollectionRequest, 'id' | 'createdAt' | 'updatedAt'>): Observable<CollectionRequest> {
     const collections = this.storageService.getData<CollectionRequest[]>(this.COLLECTIONS_KEY) || [];
     
-    const pendingRequests = collections.filter(
-      c => c.userId === collection.userId && 
-      (c.status === 'en_attente' || c.status === 'validé')
-    );
-
-    if (pendingRequests.length >= 3) {
-      return throwError(() => 'Vous avez déjà 3 demandes en cours');
-    }
-
     const totalWeight = collection.wasteTypes.reduce((sum, waste) => sum + waste.weight, 0);
     if (totalWeight > 10000) { 
       return throwError(() => 'Le poids total ne peut pas dépasser 10kg');

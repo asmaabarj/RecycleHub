@@ -42,12 +42,6 @@ export class CollectionListComponent implements OnInit {
     this.store.dispatch(CollectionActions.loadCollections());
   }
 
-  onDelete(id: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette demande ?')) {
-      this.store.dispatch(CollectionActions.deleteCollection({ id }));
-    }
-  }
-
   getStatusColor(status: string): string {
     switch (status) {
       case 'en_attente':

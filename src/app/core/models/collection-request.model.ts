@@ -9,11 +9,11 @@ export interface WasteType {
     wasteTypes: WasteType[];
     totalWeight: number;
     photos?: string[];
-    collectionAddress: string;
+    city: string;
     collectionDate: Date;
     timeSlot: string;
     notes?: string;
-    status: 'en_attente' | 'validé' | 'rejeté' | 'terminé';
+    status: 'en_attente' | 'occupee' | 'en_cours' | 'validee' | 'rejetee';
     createdAt: Date;
     updatedAt: Date;
   }

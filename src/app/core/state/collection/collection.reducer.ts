@@ -24,28 +24,9 @@ export const collectionReducer = createReducer(
     requests: collections,
     loading: false
   })),
-  on(CollectionActions.addCollection, (state, { collection }) => {
-    const pendingRequests = state.requests.filter(req => req.status === 'en_attente');
-    if (pendingRequests.length >= 3) {
-      return {
-        ...state,
-        error: 'Maximum 3 demandes en attente autorisées'
-      };
-    }
-    return {
-      ...state,
-      requests: [...state.requests, collection]
-    };
-  }),
-  on(CollectionActions.updateCollectionSuccess, (state, { collection }) => ({
+  on(CollectionActions.addCollection, (state, { collection }) => ({
     ...state,
-    requests: state.requests.map(req => 
-      req.id === collection.id ? collection : req
-    )
-  })),
-  on(CollectionActions.deleteCollectionSuccess, (state, { id }) => ({
-    ...state,
-    requests: state.requests.filter(req => req.id !== id)
+    requests: [...state.requests, collection]
   })),
   on(CollectionActions.collectionError, (state, { error }) => ({
     ...state,
