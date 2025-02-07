@@ -41,3 +41,18 @@ export const deleteCollectionFailure = createAction(
   '[Collection] Delete Collection Failure',
   props<{ error: string }>()
 );
+
+export const updateCollection = createAction(
+  '[Collection] Update Collection',
+  props<{ id: string, updates: Partial<CollectionRequest> }>()
+);
+
+export const updateCollectionSuccess = createAction(
+  '[Collection] Update Collection Success',
+  props<{ collection: CollectionRequest }>()
+);
+
+export const updateCollectionFailure = createAction(
+  '[Collection] Update Collection Failure',
+  props<{ error: string }>()
+);

@@ -95,4 +95,8 @@ export class CollectionListComponent implements OnInit {
   canDelete(status: string): boolean {
     return status === 'en_attente';
   }
+
+  canEdit(status: string): boolean {
+    return status === 'en_attente';
+  }
 } 

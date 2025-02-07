@@ -60,6 +60,18 @@ export class CollectionEffects {
     )
   );
 
+  updateCollection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CollectionActions.updateCollection),
+      mergeMap(({ id, updates }) =>
+        this.collectionService.updateCollection(id, updates).pipe(
+          map(collection => CollectionActions.updateCollectionSuccess({ collection })),
+          catchError(error => of(CollectionActions.updateCollectionFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private store: Store<AppState>,

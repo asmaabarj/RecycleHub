@@ -48,12 +48,12 @@ export const routes: Routes = [
           import('./core/pages/collection/create-collection/create-collection.component')
           .then(m => m.CreateCollectionComponent)
       },
-      // {
-      //   path: 'edit/:id',
-      //   loadComponent: () => 
-      //     import('./core/pages/collection/edit-collection/edit-collection.component')
-      //     .then(m => m.EditCollectionComponent)
-      // }
+      {
+        path: 'edit/:id',
+        loadComponent: () => 
+          import('./core/pages/collection/edit-collection/edit-collection.component')
+          .then(m => m.EditCollectionComponent)
+      }
     ]
   },
   { path: '**', redirectTo: '/login' }

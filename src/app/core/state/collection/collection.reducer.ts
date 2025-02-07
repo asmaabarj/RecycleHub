@@ -46,5 +46,22 @@ export const collectionReducer = createReducer(
     ...state,
     error,
     loading: false
+  })),
+  on(CollectionActions.updateCollection, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(CollectionActions.updateCollectionSuccess, (state, { collection }) => ({
+    ...state,
+    requests: state.requests.map(req => 
+      req.id === collection.id ? collection : req
+    ),
+    loading: false
+  })),
+  on(CollectionActions.updateCollectionFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
   }))
 );
