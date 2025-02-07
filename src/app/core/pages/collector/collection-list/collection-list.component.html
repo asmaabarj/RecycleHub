@@ -1,1 +1,106 @@
-<p>collection-list works!</p>
+<div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute h-96 w-96 rounded-full bg-[#559638]/10 -top-20 -right-20 blur-[128px] animate-pulse"></div>
+    <div class="absolute h-96 w-96 rounded-full bg-[#559638]/10 -bottom-20 -left-20 blur-[128px] animate-pulse"></div>
+    <div class="absolute top-0 left-0 w-full h-full bg-[#30323F]/40 backdrop-blur-[120px]"></div>
+  </div>
+
+  <div class="min-h-screen flex flex-col py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-12 animate-fadeIn">
+      <h1 class="text-5xl font-bold text-white tracking-tight mb-4 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+        Demandes de Collecte Disponibles
+      </h1>
+      <div class="h-1.5 w-24 bg-gradient-to-r from-[#559638] to-[#447A2D] mx-auto rounded-full shadow-lg shadow-[#559638]/20"></div>
+    </div>
+
+    <div *ngIf="loading$ | async" class="flex justify-center my-12">
+      <div class="relative">
+        <div class="w-16 h-16 border-4 border-[#559638]/20 border-t-[#559638] rounded-full animate-spin"></div>
+        <div class="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-[#559638]/30 rounded-full animate-ping"></div>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto w-full space-y-8">
+      <ng-container *ngIf="collections$ | async as collections">
+        <div *ngIf="collections.length === 0" 
+             class="text-center py-16 px-6 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400/50 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+          </svg>
+          <p class="text-gray-400 text-lg">Aucune demande de collecte disponible dans votre ville</p>
+        </div>
+
+        <div *ngFor="let collection of collections; let i = index" 
+             class="group bg-gradient-to-br from-[#30323F]/90 to-[#383B4A]/90 backdrop-blur-xl 
+                    rounded-3xl p-8 border border-white/10 
+                    hover:border-[#559638]/30 transition-all duration-500 
+                    hover:shadow-xl hover:shadow-[#559638]/5
+                    animate-fadeIn [animation-delay:calc(100ms*{{i}})]">
+          
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="space-y-6 w-full">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <div class="text-white/60 text-sm">Adresse</div>
+                  <div class="text-white font-medium flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {{ collection.city }}
+                  </div>
+                </div>
+                
+                <div class="space-y-2">
+                  <div class="text-white/60 text-sm">Date de collecte</div>
+                  <div class="text-white font-medium flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {{ collection.collectionDate | date:'dd/MM/yyyy' }} à {{ collection.timeSlot }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <div *ngFor="let waste of collection.wasteTypes" 
+                     class="px-4 py-2 rounded-full text-sm bg-black/20 text-white backdrop-blur-sm
+                            border border-[#559638]/30 transition-colors duration-300">
+                  <div class="flex items-center gap-2">
+                    {{ waste.type }} - {{ waste.weight }}g
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="collection.notes" class="text-white/70 text-sm mt-4">
+                {{ collection.notes }}
+              </div>
+            </div>
+          </div>
+
+          <app-collection-photos 
+            *ngIf="collection.photos?.length"
+            [photos]="collection.photos"
+            (photoClick)="openPhotoModal($event)">
+          </app-collection-photos>
+        </div>
+      </ng-container>
+    </div>
+
+    <app-photo-modal 
+      *ngIf="selectedPhotoUrl"
+      [photoUrl]="selectedPhotoUrl"
+      (close)="closePhotoModal()">
+    </app-photo-modal>
+  </div>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+</style>

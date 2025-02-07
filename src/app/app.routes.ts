@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { userResolver } from './core/resolvers/user.resolver';
 import { CollectionGuard } from './core/guards/collection.guard';
 import { authPagesGuard } from './core/guards/auth-pages.guard';
+import { CollectorGuard } from './core/guards/collector.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -53,6 +54,18 @@ export const routes: Routes = [
         loadComponent: () => 
           import('./core/pages/collection/edit-collection/edit-collection.component')
           .then(m => m.EditCollectionComponent)
+      }
+    ]
+  },
+  {
+    path: 'collector',
+    canActivate: [authGuard, CollectorGuard],
+    children: [
+      {
+        path: 'collections',
+        loadComponent: () => 
+          import('./core/pages/collector/collection-list/collection-list.component')
+          .then(m => m.CollectorCollectionListComponent)
       }
     ]
   },
