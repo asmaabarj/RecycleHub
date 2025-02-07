@@ -1,7 +1,7 @@
 <div class="font-[sans-serif] min-h-screen bg-gradient-to-br from-[#30323F] via-[#383B4A] to-[#30323F] relative overflow-hidden">
   <div class="absolute inset-0">
-    <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -top-32 -right-32 blur-3xl animate-pulse"></div>
-    <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -bottom-32 -left-32 blur-3xl animate-pulse"></div>
+    <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -top-32 -right-32 blur-3xl "></div>
+    <div class="absolute h-[600px] w-[600px] rounded-full bg-[#559638]/5 -bottom-32 -left-32 blur-3xl "></div>
     <div class="absolute top-0 left-0 w-full h-full bg-[#30323F]/30 backdrop-blur-[100px]"></div>
   </div>
 
@@ -64,7 +64,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                     </svg>
-                    Modifier
+                    Modifier mon profil
                   </button>
                   <button (click)="onLogout()"
                           class="inline-flex items-center px-6 py-2.5 rounded-xl text-white bg-[#383B4A] hover:bg-[#444752] transition-all duration-300 shadow-lg hover:shadow-white/10 transform hover:translate-y-[-2px]">
@@ -80,21 +80,23 @@
         </div>
 
         <div class="p-8 pt-0">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="grid grid-cols-1  gap-8">
             <ng-container *ngIf="user$ | async as user">
+             
               <div class="group bg-gradient-to-br from-[#383B4A]/40 to-[#383B4A]/30 rounded-2xl p-8 hover:from-[#383B4A]/50 hover:to-[#383B4A]/40 transition-all duration-300 border border-white/10 hover:border-[#559638]/30 shadow-xl">
-                <div class="flex items-center mb-6">
+               <div class="grid grid-cols-1 md:grid-cols-2 ">
+                <div>
+                <div class=" flex items-center mb-6">
                   <svg class="w-5 h-5 text-[#559638] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                   <h3 class="text-lg font-semibold text-white">Informations personnelles</h3>
                 </div>
-                <div class="space-y-4">
-                  <div class="group-hover:translate-x-1 transition-transform duration-300">
+                  <div class="group-hover:translate-x-1 mb-3 transition-transform duration-300">
                     <p class="text-sm text-gray-400 mb-1">Email</p>
                     <p class="text-white font-medium">{{user.email}}</p>
                   </div>
-                  <div class="group-hover:translate-x-1 transition-transform duration-300">
+                  <div class="group-hover:translate-x-1 mb-3 transition-transform duration-300">
                     <p class="text-sm text-gray-400 mb-1">Téléphone</p>
                     <p class="text-white font-medium">{{user.phone}}</p>
                   </div>
@@ -103,10 +105,8 @@
                     <p class="text-white font-medium">{{user.birthDate | date:'dd/MM/yyyy'}}</p>
                   </div>
                 </div>
-              </div>
-
-              <div class="group bg-gradient-to-br from-[#383B4A]/40 to-[#383B4A]/30 rounded-2xl p-8 hover:from-[#383B4A]/50 hover:to-[#383B4A]/40 transition-all duration-300 border border-white/10 hover:border-[#559638]/30 shadow-xl">
-                <div class="flex items-center mb-6">
+         <div>
+                    <div class="flex items-center mb-6">
                   <svg class="w-5 h-5 text-[#559638] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -124,6 +124,123 @@
                   </div>
                 </div>
               </div>
+              </div>
+            </div>
+
+              <div class="group bg-gradient-to-br from-[#383B4A]/40 to-[#383B4A]/30 rounded-2xl p-8 
+                          hover:from-[#383B4A]/50 hover:to-[#383B4A]/40 transition-all duration-300 
+                          border border-white/10 hover:border-[#559638]/30 shadow-xl">
+                <div class="flex items-center mb-8">
+                  <div class="p-2 bg-[#559638]/10 rounded-xl mr-3">
+                    <svg class="w-6 h-6 text-[#559638]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-semibold text-white">Mes Points de Recyclage</h3>
+                    <p class="text-sm text-gray-400">Gagnez des points en recyclant vos déchets</p>
+                  </div>
+                </div>
+                
+                <div class="relative">
+                  <div class="absolute inset-0 bg-gradient-to-r from-[#559638]/5 to-transparent rounded-2xl blur-xl"></div>
+                  <div class="relative bg-[#30323F]/50 rounded-2xl p-6 border border-white/5 backdrop-blur-sm">
+                    <div class="text-center">
+                      <div class="inline-flex items-center justify-center">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-[#559638] to-[#467b2d] bg-clip-text text-transparent 
+                                    ">
+                          {{ userPoints$ | async }}
+                        </div>
+                        <div class="ml-2 text-lg text-gray-400">pts</div>
+                      </div>
+                      <p class="text-gray-400 text-sm mt-2">Points accumulés grâce à vos collectes</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-8">
+                  <div class="flex items-center mb-4">
+                    <svg class="w-4 h-4 text-[#559638] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h4 class="text-sm font-medium text-white">Barème des points par kilogramme</h4>
+                  </div>
+                  
+                  <div class="grid grid-cols-2 gap-4">
+                    <!-- Plastique -->
+                    <div class="bg-[#30323F]/30 rounded-xl p-4 border border-white/5 backdrop-blur-sm
+                                hover:bg-[#30323F]/40 transition-all duration-300 group">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                          <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                          </div>
+                          <span class="text-white font-medium">Plastique</span>
+                        </div>
+                        <span class="text-blue-400 font-semibold">2 pts</span>
+                      </div>
+                    </div>
+
+                    <!-- Verre -->
+                    <div class="bg-[#30323F]/30 rounded-xl p-4 border border-white/5 backdrop-blur-sm
+                                hover:bg-[#30323F]/40 transition-all duration-300 group">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                          <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                          </div>
+                          <span class="text-white font-medium">Verre</span>
+                        </div>
+                        <span class="text-green-400 font-semibold">1 pt</span>
+                      </div>
+                    </div>
+
+                    <!-- Papier -->
+                    <div class="bg-[#30323F]/30 rounded-xl p-4 border border-white/5 backdrop-blur-sm
+                                hover:bg-[#30323F]/40 transition-all duration-300 group">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                          <div class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          </div>
+                          <span class="text-white font-medium">Papier</span>
+                        </div>
+                        <span class="text-yellow-400 font-semibold">1 pt</span>
+                      </div>
+                    </div>
+
+                    <!-- Métal -->
+                    <div class="bg-[#30323F]/30 rounded-xl p-4 border border-white/5 backdrop-blur-sm
+                                hover:bg-[#30323F]/40 transition-all duration-300 group">
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                          <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                          </div>
+                          <span class="text-white font-medium">Métal</span>
+                        </div>
+                        <span class="text-purple-400 font-semibold">5 pts</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
             </ng-container>
           </div>
 
