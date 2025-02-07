@@ -24,6 +24,8 @@ export class CreateCollectionComponent implements OnInit {
   collectionForm!: FormGroup;
   timeSlots: string[] = this.generateTimeSlots();
   errorMessage: string = '';
+  selectedFiles: File[] = [];
+  previewUrls: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -121,21 +123,29 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: any) {
+  async onFileSelected(event: any) {
     const files = event.target.files;
     if (files) {
-      const photos: string[] = [];
-      for (let i = 0; i < files.length; i++) {
+      this.selectedFiles = Array.from(files);
+      this.previewUrls = [];
+      
+      for (const file of this.selectedFiles) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          photos.push(e.target.result);
-          if (photos.length === files.length) {
-            this.collectionForm.patchValue({ photos });
-          }
+          this.previewUrls.push(e.target.result);
         };
-        reader.readAsDataURL(files[i]);
+        reader.readAsDataURL(file);
       }
+      
+      // Mettre à jour le formulaire avec les URLs des images
+      this.collectionForm.patchValue({ photos: this.previewUrls });
     }
+  }
+
+  removePhoto(index: number) {
+    this.previewUrls.splice(index, 1);
+    this.selectedFiles.splice(index, 1);
+    this.collectionForm.patchValue({ photos: this.previewUrls });
   }
 
   private futureDateValidator(): ValidatorFn {

@@ -6,17 +6,19 @@ import { Observable, combineLatest, map } from 'rxjs';
 import { CollectionRequest } from '../../../models/collection-request.model';
 import { User } from '../../../models/user.model';
 import * as CollectionActions from '../../../state/collection/collection.actions';
+import { PhotoModalComponent } from '../../../shared/components/photo-modal/photo-modal.component';
 
 @Component({
   selector: 'app-collection-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, PhotoModalComponent],
   templateUrl: './collection-list.component.html'
 })
 export class CollectionListComponent implements OnInit {
   collections$: Observable<CollectionRequest[]>;
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
+  selectedPhotoUrl: string | null = null;
 
   constructor(
     private store: Store<{ 
@@ -74,5 +76,13 @@ export class CollectionListComponent implements OnInit {
 
   calculateTotalWeight(wasteTypes: any[]): number {
     return wasteTypes.reduce((sum, waste) => sum + waste.weight, 0);
+  }
+
+  openPhotoModal(photoUrl: string) {
+    this.selectedPhotoUrl = photoUrl;
+  }
+
+  closePhotoModal() {
+    this.selectedPhotoUrl = null;
   }
 } 

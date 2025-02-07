@@ -19,6 +19,11 @@ export class CollectionService {
   addCollection(collection: Omit<CollectionRequest, 'id' | 'createdAt' | 'updatedAt'>): Observable<CollectionRequest> {
     const collections = this.storageService.getData<CollectionRequest[]>(this.COLLECTIONS_KEY) || [];
     
+    const pendingRequests = collections.filter(
+      c => c.userId === collection.userId && 
+      (c.status === 'en_attente' || c.status === 'validee')
+    );
+
     const totalWeight = collection.wasteTypes.reduce((sum, waste) => sum + waste.weight, 0);
     if (totalWeight > 10000) { 
       return throwError(() => 'Le poids total ne peut pas dépasser 10kg');
@@ -83,5 +88,23 @@ export class CollectionService {
     this.storageService.saveData(this.COLLECTIONS_KEY, updatedCollections);
     
     return of(void 0);
+  }
+
+  private async processPhotos(files: File[]): Promise<string[]> {
+    const photos: string[] = [];
+    for (const file of files) {
+      const base64 = await this.convertToBase64(file);
+      photos.push(base64);
+    }
+    return photos;
+  }
+
+  private convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
+    });
   }
 }
