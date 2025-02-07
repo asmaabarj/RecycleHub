@@ -41,7 +41,7 @@ export class CollectorCollectionListComponent implements OnInit {
     ]).pipe(
       map(([collections, user]) => 
         collections.filter(collection => 
-          collection.status === 'en_attente' && 
+          collection.status !== 'validee' && collection.status !== 'rejetee' && 
           collection.city === user?.city
         )
       )
@@ -82,5 +82,16 @@ export class CollectorCollectionListComponent implements OnInit {
 
   closePhotoModal() {
     this.selectedPhotoUrl = null;
+  }
+
+  getStatusLabel(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'en_attente': 'En attente',
+      'occupee': 'Occupée',
+      'validee': 'Validée',
+      'rejetee': 'Rejetée',
+      'en_cours': 'En cours'
+    };
+    return statusMap[status] || status;
   }
 }

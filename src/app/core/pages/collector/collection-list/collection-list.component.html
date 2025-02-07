@@ -52,6 +52,42 @@
                 </div>
                 
                 <div class="space-y-2">
+                  <div class="text-white/60 text-sm">Statut</div>
+                  <div class="flex flex-wrap items-center gap-4 mb-6">
+                    <span [ngClass]="{
+                      'bg-yellow-400/10 text-yellow-400 border-yellow-400/20': collection.status === 'en_attente',
+                      'bg-blue-400/10 text-blue-400 border-blue-400/20': collection.status === 'occupee',
+                      'bg-green-400/10 text-green-400 border-green-400/20': collection.status === 'validee',
+                      'bg-red-400/10 text-red-400 border-red-400/20': collection.status === 'rejetee',
+                      'bg-purple-400/10 text-purple-400 border-purple-400/20': collection.status === 'en_cours'
+                    }" class="px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border flex items-center gap-2">
+                      <svg *ngIf="collection.status === 'en_attente'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <svg *ngIf="collection.status === 'occupee'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      <svg *ngIf="collection.status === 'validee'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <svg *ngIf="collection.status === 'rejetee'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <svg *ngIf="collection.status === 'en_cours'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      {{ getStatusLabel(collection.status) }}
+                    </span>
+                    <span class="flex items-center gap-2 text-gray-400 text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {{ collection.createdAt | date:'dd/MM/yyyy' }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="space-y-2">
                   <div class="text-white/60 text-sm">Date de collecte</div>
                   <div class="text-white font-medium flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#559638]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
