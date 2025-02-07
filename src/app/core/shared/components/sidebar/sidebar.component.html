@@ -64,6 +64,31 @@
       </div>
     </ng-container>
 
+    <ng-container *ngIf="user.userType === 'collector'">
+      <div>
+        <p class="text-xs font-semibold text-[#559638] uppercase mt-10 tracking-wider mb-3 px-4">Gestion des Collectes</p>
+        <a routerLink="/" 
+           routerLinkActive="bg-gradient-to-r from-[#559638] to-[#447A2D] text-white shadow-lg shadow-[#559638]/20"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center space-x-3 p-2 rounded-xl text-gray-400 hover:bg-[#559638]/10 hover:text-white transition-all duration-300 group">
+           <div class="relative w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <span class="font-medium">demandes de collectes</span>
+        </a>
+
+        <a routerLink="/"
+           routerLinkActive="bg-gradient-to-r from-[#559638] to-[#447A2D] text-white shadow-lg shadow-[#559638]/20"
+           class="flex items-center space-x-3 p-2 rounded-xl text-gray-400 hover:bg-[#559638]/10 hover:text-white transition-all duration-300 mt-1">
+          <div class="relative w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+            
+          </div>
+          <span class="font-medium">Historique</span>
+        </a>
+      </div>
+    </ng-container>
   </nav>
 
   <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10 bg-gradient-to-t from-[#2A2C37] to-transparent">
