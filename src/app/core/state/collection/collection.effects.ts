@@ -5,7 +5,6 @@ import { map, mergeMap, catchError, withLatestFrom, tap, take } from 'rxjs/opera
 import { Store } from '@ngrx/store';
 import { CollectionService } from '../../services/collection.service';
 import * as CollectionActions from './collection.actions';
-import { AuthService } from '../../services/auth.service';
 import { AppState } from '../app.state';
 
 

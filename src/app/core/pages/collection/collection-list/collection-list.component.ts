@@ -7,11 +7,19 @@ import { CollectionRequest } from '../../../models/collection-request.model';
 import { User } from '../../../models/user.model';
 import * as CollectionActions from '../../../state/collection/collection.actions';
 import { PhotoModalComponent } from '../../../shared/components/photo-modal/photo-modal.component';
+import { CollectionPhotosComponent } from '../../../shared/components/collection-photos/collection-photos.component';
+import { DeleteAlertComponent } from '../../../shared/components/delete-alert/delete-alert.component';
 
 @Component({
   selector: 'app-collection-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, PhotoModalComponent],
+  imports: [
+    CommonModule, 
+    RouterLink, 
+    PhotoModalComponent,
+    CollectionPhotosComponent,
+    DeleteAlertComponent
+  ],
   templateUrl: './collection-list.component.html'
 })
 export class CollectionListComponent implements OnInit {
@@ -19,6 +27,8 @@ export class CollectionListComponent implements OnInit {
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
   selectedPhotoUrl: string | null = null;
+  showDeleteAlert = false;
+  collectionToDelete: string | null = null;
 
   constructor(
     private store: Store<{ 
@@ -87,9 +97,21 @@ export class CollectionListComponent implements OnInit {
   }
 
   deleteCollection(id: string) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette demande de collecte ?')) {
-      this.store.dispatch(CollectionActions.deleteCollection({ id }));
+    this.collectionToDelete = id;
+    this.showDeleteAlert = true;
+  }
+
+  confirmDelete() {
+    if (this.collectionToDelete) {
+      this.store.dispatch(CollectionActions.deleteCollection({ id: this.collectionToDelete }));
+      this.showDeleteAlert = false;
+      this.collectionToDelete = null;
     }
+  }
+
+  cancelDelete() {
+    this.showDeleteAlert = false;
+    this.collectionToDelete = null;
   }
 
   canDelete(status: string): boolean {
