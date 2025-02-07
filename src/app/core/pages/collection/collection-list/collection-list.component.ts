@@ -125,4 +125,12 @@ export class CollectionListComponent implements OnInit {
   canEdit(status: string): boolean {
     return status === 'en_attente';
   }
+
+  getActiveCollectionsCount(collections: CollectionRequest[]): number {
+    return collections.filter(c => 
+      c.status === 'en_attente' || 
+      c.status === 'occupee' || 
+      c.status === 'en_cours'
+    ).length;
+  }
 } 

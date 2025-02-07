@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import * as CollectionActions from '../../../state/collection/collection.actions';
 import { take } from 'rxjs/operators';
 import { User } from '../../../models/user.model';
+import { CollectionService } from '../../../services/collection.service';
 
 interface AppState {
   collection: {
@@ -31,7 +32,8 @@ export class CreateCollectionComponent implements OnInit {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private router: Router,
-    private authStore: Store<{ auth: { user: User | null } }>
+    private authStore: Store<{ auth: { user: User | null } }>,
+    private collectionService: CollectionService
   ) {}
 
   ngOnInit() {
@@ -95,32 +97,43 @@ export class CreateCollectionComponent implements OnInit {
 
   onSubmit() {
     if (this.collectionForm.valid) {
-      const error = this.validateCollection(this.collectionForm.value);
-      if (error) {
-        this.errorMessage = error;
-        return;
-      }
-      const formValue = this.collectionForm.value;
-      const totalWeight = formValue.wasteTypes.reduce(
-        (sum: number, waste: any) => sum + Number(waste.weight), 0
-      );
-
       this.authStore.select(state => state.auth.user).pipe(take(1)).subscribe(user => {
         if (user) {
-          const newCollection = {
-            ...formValue,
-            userId: user.id,
-            totalWeight,
-            status: 'en_attente',
-            createdAt: new Date(),
-            updatedAt: new Date()
-          };
+          this.collectionService.getUserActiveCollectionsCount(user.id).subscribe({
+            next: (count) => {
+              if (count >= 3) {
+                this.errorMessage = 'Vous avez déjà atteint la limite de 3 demandes actives simultanées';
+                return;
+              }
+              const error = this.validateCollection(this.collectionForm.value);
+              if (error) {
+                this.errorMessage = error;
+                return;
+              }
+              const formValue = this.collectionForm.value;
+              const totalWeight = formValue.wasteTypes.reduce(
+                (sum: number, waste: any) => sum + Number(waste.weight), 0
+              );
 
-          this.store.dispatch(CollectionActions.addCollection({
-            collection: newCollection
-          }));
-          
-          this.router.navigate(['/collections']);
+              const newCollection = {
+                ...formValue,
+                userId: user.id,
+                totalWeight,
+                status: 'en_attente',
+                createdAt: new Date(),
+                updatedAt: new Date()
+              };
+
+              this.store.dispatch(CollectionActions.addCollection({
+                collection: newCollection
+              }));
+              
+              this.router.navigate(['/collections']);
+            },
+            error: (error) => {
+              this.errorMessage = error;
+            }
+          });
         }
       });
     }
@@ -140,7 +153,6 @@ export class CreateCollectionComponent implements OnInit {
         reader.readAsDataURL(file);
       }
       
-      // Mettre à jour le formulaire avec les URLs des images
       this.collectionForm.patchValue({ photos: this.previewUrls });
     }
   }

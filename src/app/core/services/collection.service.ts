@@ -16,13 +16,26 @@ export class CollectionService {
     return of(collections.filter(c => c.userId === userId));
   }
 
+  getUserActiveCollectionsCount(userId: string): Observable<number> {
+    const collections = this.storageService.getData<CollectionRequest[]>(this.COLLECTIONS_KEY) || [];
+    const activeCollections = collections.filter(c => 
+      c.userId === userId && 
+      (c.status === 'en_attente' || c.status === 'occupee' || c.status === 'en_cours')
+    );
+    return of(activeCollections.length);
+  }
+
   addCollection(collection: Omit<CollectionRequest, 'id' | 'createdAt' | 'updatedAt'>): Observable<CollectionRequest> {
     const collections = this.storageService.getData<CollectionRequest[]>(this.COLLECTIONS_KEY) || [];
     
-    const pendingRequests = collections.filter(
+    const activeRequests = collections.filter(
       c => c.userId === collection.userId && 
-      (c.status === 'en_attente' || c.status === 'validee')
+      (c.status === 'en_attente' || c.status === 'occupee' || c.status === 'en_cours')
     );
+
+    if (activeRequests.length >= 3) {
+      return throwError(() => 'Vous avez déjà atteint la limite de 3 demandes actives simultanées');
+    }
 
     const totalWeight = collection.wasteTypes.reduce((sum, waste) => sum + waste.weight, 0);
     if (totalWeight > 10000) { 
@@ -56,9 +69,6 @@ export class CollectionService {
     }
 
     const collection = collections[index];
-    if (collection.status !== 'en_attente') {
-      return throwError(() => 'Seules les demandes en attente peuvent être modifiées');
-    }
 
     const updatedCollection = {
       ...collection,
@@ -78,10 +88,6 @@ export class CollectionService {
     
     if (!collection) {
       return throwError(() => 'Collection non trouvée');
-    }
-
-    if (collection.status !== 'en_attente') {
-      return throwError(() => 'Seules les demandes en attente peuvent être supprimées');
     }
 
     const updatedCollections = collections.filter(c => c.id !== id);
