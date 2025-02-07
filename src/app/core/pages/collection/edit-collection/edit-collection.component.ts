@@ -49,7 +49,7 @@ export class EditCollectionComponent implements OnInit {
   private initForm() {
     this.collectionForm = this.fb.group({
       wasteTypes: this.fb.array([], [Validators.required]),
-      collectionAddress: [this.collection.city, [Validators.required]],
+      city: [this.collection.city, [Validators.required]],
       collectionDate: [
         this.formatDate(this.collection.collectionDate), 
         [Validators.required, this.futureDateValidator()]

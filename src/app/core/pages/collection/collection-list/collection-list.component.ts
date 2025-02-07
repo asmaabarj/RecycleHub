@@ -58,12 +58,14 @@ export class CollectionListComponent implements OnInit {
     switch (status) {
       case 'en_attente':
         return 'bg-yellow-500/20 text-yellow-500';
-      case 'validé':
+      case 'validee':
         return 'bg-green-500/20 text-green-500';
-      case 'rejeté':
+      case 'rejetee':
         return 'bg-red-500/20 text-red-500';
-      case 'terminé':
+      case 'en_cours':
         return 'bg-blue-500/20 text-blue-500';
+      case 'occupee':
+        return 'bg-purple-500/20 text-purple-500';
       default:
         return 'bg-gray-500/20 text-gray-500';
     }
@@ -73,12 +75,14 @@ export class CollectionListComponent implements OnInit {
     switch (status) {
       case 'en_attente':
         return 'En attente';
-      case 'validé':
+      case 'validee':
         return 'Validé';
-      case 'rejeté':
+      case 'rejetee':
         return 'Rejeté';
-      case 'terminé':
-        return 'Terminé';
+      case 'en_cours':
+        return 'En cours';
+      case 'occupee':
+        return 'Occupée';
       default:
         return status;
     }

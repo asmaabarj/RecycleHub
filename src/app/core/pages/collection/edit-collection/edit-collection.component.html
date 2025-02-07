@@ -73,11 +73,11 @@
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-400 mb-1">Adresse de collecte *</label>
-            <input formControlName="collectionAddress"
+            <label class="block text-sm font-medium text-gray-400 mb-1">Ville de collecte *</label>
+            <input formControlName="city"
                    class="w-full bg-[#383B4A]/70 text-white rounded-xl border border-white/10 px-4 py-2.5"
-                   placeholder="Adresse complète">
-            <div *ngIf="isFieldInvalid('collectionAddress')" class="text-red-500 text-sm mt-1">
+                   placeholder="Entrez la ville">
+            <div *ngIf="isFieldInvalid('city')" class="text-red-500 text-sm mt-1">
               Ce champ est requis
             </div>
           </div>

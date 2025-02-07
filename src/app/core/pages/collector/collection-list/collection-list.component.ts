@@ -55,6 +55,27 @@ export class CollectorCollectionListComponent implements OnInit {
     this.store.dispatch(CollectionActions.loadCollections());
   }
 
+  selectCollection(collectionId: string) {
+    const collectionsStr = localStorage.getItem('collections');
+    if (collectionsStr) {
+      const collections = JSON.parse(collectionsStr);
+      
+      const updatedCollections = collections.map((collection: CollectionRequest) => {
+        if (collection.id === collectionId) {
+          return { ...collection, status: 'occupee' };
+        }
+        return collection;
+      });
+
+      localStorage.setItem('collections', JSON.stringify(updatedCollections));
+      
+      this.store.dispatch(CollectionActions.updateCollectionStatus({ 
+        collectionId, 
+        status: 'occupee' 
+      }));
+    }
+  }
+
   openPhotoModal(photoUrl: string) {
     this.selectedPhotoUrl = photoUrl;
   }

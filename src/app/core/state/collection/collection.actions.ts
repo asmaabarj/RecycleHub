@@ -56,3 +56,8 @@ export const updateCollectionFailure = createAction(
   '[Collection] Update Collection Failure',
   props<{ error: string }>()
 );
+
+export const updateCollectionStatus = createAction(
+  '[Collection] Update Status',
+  props<{ collectionId: string, status: string }>()
+);
