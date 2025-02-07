@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
   user$: Observable<User | null>;
   showDeleteAlert = false;
   userPoints$: Observable<number>;
+  canConvert$: Observable<boolean>;
 
   constructor(
     private store: Store<{ 
@@ -47,6 +48,11 @@ export class ProfileComponent implements OnInit {
             return totalPoints + this.calculateCollectionPoints(collection.wasteTypes);
           }, 0);
       })
+    );
+
+    // Vérification si les points sont > 100
+    this.canConvert$ = this.userPoints$.pipe(
+      map(points => points >= 100)
     );
   }
 
@@ -97,5 +103,10 @@ export class ProfileComponent implements OnInit {
 
   handleDeleteCancel() {
     this.showDeleteAlert = false;
+  }
+
+  onConvertPoints() {
+    // TODO: Implémenter la logique de conversion
+    console.log('Points convertis !');
   }
 }
