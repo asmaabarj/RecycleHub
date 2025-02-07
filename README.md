@@ -94,19 +94,15 @@ recyclehub/
 <details>
 <summary>🖼️ Voir les captures d'écran</summary>
 
-### 🏠 Page d'accueil
 <img src="image-1.png" alt="Page d'accueil" width="600"/>
 
-### 🔐 Authentification
 <div align="center">
   <img src="image-2.png" alt="Page de connexion" width="400"/>
   <img src="image-3.png" alt="Page d'inscription" width="400"/>
 </div>
 
-### 👤 Profil Utilisateur
 <img src="image-4.png" alt="Page de profil" width="600"/>
 
-### 📦 Gestion des Collectes
 <div align="center">
   <table>
     <tr>
@@ -116,15 +112,12 @@ recyclehub/
   </table>
 </div>
 
-### 💰 Système de Points
 <img src="image-7.png" alt="Système de points et récompenses" width="600"/>
 
 </details>
 
 > 💡 Cliquez sur "Voir les captures d'écran" pour afficher toutes les images
 
-### 🎥 Démo en direct
-Voir la démo : [RecycleHub Demo](https://votre-lien-demo.com)
 
 ## 🔒 Sécurité
 - Authentification sécurisée
