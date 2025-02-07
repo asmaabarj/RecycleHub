@@ -8,20 +8,23 @@ import * as CollectionActions from './collection.actions';
 import { AuthService } from '../../services/auth.service';
 import { AppState } from '../app.state';
 
-interface CollectionRequest {
-  status: string;
-}
+
 
 @Injectable()
 export class CollectionEffects {
   saveCollections$ = createEffect(() => 
     this.actions$.pipe(
-      ofType(CollectionActions.addCollection),
-      tap(() => {
-        const currentState = this.store.select(state => state.collection.requests);
-        currentState.pipe(take(1)).subscribe(requests => {
-          localStorage.setItem('collections', JSON.stringify(requests));
-        });
+      ofType(
+        CollectionActions.addCollectionSuccess,
+        CollectionActions.deleteCollectionSuccess
+      ),
+      withLatestFrom(this.store.select(state => state.collection.requests)),
+      tap(([_, requests]) => {
+        const collectionsToSave = requests.map(collection => ({
+          ...collection,
+          id: collection.id || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        }));
+        localStorage.setItem('collections', JSON.stringify(collectionsToSave));
       })
     ),
     { dispatch: false }
@@ -45,10 +48,21 @@ export class CollectionEffects {
     )
   );
 
+  deleteCollection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CollectionActions.deleteCollection),
+      mergeMap(({ id }) =>
+        this.collectionService.deleteCollection(id).pipe(
+          map(() => CollectionActions.deleteCollectionSuccess({ id })),
+          catchError(error => of(CollectionActions.deleteCollectionFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private store: Store<AppState>,
     private collectionService: CollectionService,
-    private authService: AuthService
   ) {}
 }

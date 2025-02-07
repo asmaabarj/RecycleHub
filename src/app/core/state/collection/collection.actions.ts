@@ -26,3 +26,18 @@ export const collectionError = createAction(
   '[Collection] Error',
   props<{ error: string }>()
 );
+
+export const deleteCollection = createAction(
+  '[Collection] Delete Collection',
+  props<{ id: string }>()
+);
+
+export const deleteCollectionSuccess = createAction(
+  '[Collection] Delete Collection Success',
+  props<{ id: string }>()
+);
+
+export const deleteCollectionFailure = createAction(
+  '[Collection] Delete Collection Failure',
+  props<{ error: string }>()
+);

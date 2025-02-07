@@ -32,5 +32,19 @@ export const collectionReducer = createReducer(
     ...state,
     error,
     loading: false
+  })),
+  on(CollectionActions.deleteCollection, (state) => ({
+    ...state,
+    loading: true
+  })),
+  on(CollectionActions.deleteCollectionSuccess, (state, { id }) => ({
+    ...state,
+    requests: state.requests.filter(request => request.id !== id),
+    loading: false
+  })),
+  on(CollectionActions.deleteCollectionFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
   }))
 );

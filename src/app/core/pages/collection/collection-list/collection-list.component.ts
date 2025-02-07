@@ -85,4 +85,14 @@ export class CollectionListComponent implements OnInit {
   closePhotoModal() {
     this.selectedPhotoUrl = null;
   }
+
+  deleteCollection(id: string) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette demande de collecte ?')) {
+      this.store.dispatch(CollectionActions.deleteCollection({ id }));
+    }
+  }
+
+  canDelete(status: string): boolean {
+    return status === 'en_attente';
+  }
 } 

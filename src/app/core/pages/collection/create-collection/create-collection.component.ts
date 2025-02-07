@@ -107,16 +107,19 @@ export class CreateCollectionComponent implements OnInit {
 
       this.authStore.select(state => state.auth.user).pipe(take(1)).subscribe(user => {
         if (user) {
+          const newCollection = {
+            ...formValue,
+            userId: user.id,
+            totalWeight,
+            status: 'en_attente',
+            createdAt: new Date(),
+            updatedAt: new Date()
+          };
+
           this.store.dispatch(CollectionActions.addCollection({
-            collection: {
-              ...formValue,
-              userId: user.id,
-              totalWeight,
-              status: 'en_attente',
-              createdAt: new Date(),
-              updatedAt: new Date()
-            }
+            collection: newCollection
           }));
+          
           this.router.navigate(['/collections']);
         }
       });
