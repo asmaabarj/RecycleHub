@@ -294,3 +294,10 @@
   (onConfirm)="handleDeleteConfirm()"
   (onCancel)="handleDeleteCancel()">
 </app-delete-alert>
+
+<app-convert-points-alert 
+  *ngIf="showConvertAlert"
+  [amount]="voucherAmount"
+  (onConfirm)="handleConvertConfirm()"
+  (onCancel)="handleConvertCancel()">
+</app-convert-points-alert>

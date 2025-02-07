@@ -9,11 +9,12 @@ import { CollectionRequest } from '../../../models/collection-request.model';
 import * as AuthActions from '../../../state/auth/auth.actions';
 import { AuthService } from '../../../services/auth.service';
 import { DeleteAlertComponent } from '../../../shared/components/delete-alert/delete-alert.component';
+import { ConvertPointsAlertComponent } from '../../../shared/components/convert-points-alert/convert-points-alert.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterLink, DeleteAlertComponent],
+  imports: [CommonModule, RouterLink, DeleteAlertComponent, ConvertPointsAlertComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -22,6 +23,8 @@ export class ProfileComponent implements OnInit {
   showDeleteAlert = false;
   userPoints$: Observable<number>;
   canConvert$: Observable<boolean>;
+  showConvertAlert = false;
+  voucherAmount = 0;
 
   constructor(
     private store: Store<{ 
@@ -34,7 +37,6 @@ export class ProfileComponent implements OnInit {
     const currentUser = this.authService.getCurrentUser();
     this.user$ = currentUser ? of(currentUser) : this.store.select(state => state.auth.user);
     
-    // Calcul des points
     this.userPoints$ = combineLatest([
       this.user$,
       this.store.select(state => state.collection.requests)
@@ -50,7 +52,6 @@ export class ProfileComponent implements OnInit {
       })
     );
 
-    // Vérification si les points sont > 100
     this.canConvert$ = this.userPoints$.pipe(
       map(points => points >= 100)
     );
@@ -106,7 +107,28 @@ export class ProfileComponent implements OnInit {
   }
 
   onConvertPoints() {
-    // TODO: Implémenter la logique de conversion
-    console.log('Points convertis !');
+    const currentPoints = this.userPoints$.pipe(
+      map(points => {
+        if (points >= 500) {
+          this.voucherAmount = 350;
+        } else if (points >= 200) {
+          this.voucherAmount = 120;
+        } else if (points >= 100) {
+          this.voucherAmount = 50;
+        }
+        return points;
+      })
+    ).subscribe();
+    
+    this.showConvertAlert = true;
+  }
+
+  handleConvertConfirm() {
+    console.log(`Points convertis en bon d'achat de ${this.voucherAmount} Dh`);
+    this.showConvertAlert = false;
+  }
+
+  handleConvertCancel() {
+    this.showConvertAlert = false;
   }
 }
